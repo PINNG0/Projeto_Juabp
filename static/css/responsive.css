@@ -1,0 +1,40 @@
+/* =========================================
+   TABLETS E CELULARES GRANDES (Até 900px)
+========================================= */
+@media (max-width: 900px) {
+    /* Home Hero */
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; min-height: auto; padding-top: 100px; }
+    .hero-text h1 { font-size: 60px; }
+    .hero-image { margin-top: 30px; }
+    .actions { justify-content: center; flex-wrap: wrap; }
+    
+    /* Menu */
+    .menu { gap: 15px; }
+}
+
+/* =========================================
+   CELULARES MÉDIOS (Até 768px)
+========================================= */
+@media (max-width: 768px) {
+    /* Timeline da Página Sobre */
+    .timeline-container::before { left: 20px; }
+    .timeline-item::before { left: 13px; }
+    .timeline-item { flex-direction: column; gap: 15px; }
+    .timeline-year { text-align: left; padding-left: 50px; font-size: 24px; flex: auto; }
+    .timeline-content { margin-left: 20px; padding: 25px; }
+    .timeline-image { height: 200px; }
+
+    /* Novo Event Hero Adaptado */
+    .event-hero { min-height: 450px; padding: 40px 20px; }
+    .event-meta { gap: 15px; flex-direction: column; }
+}
+
+/* =========================================
+   CELULARES PEQUENOS (Até 600px)
+========================================= */
+@media (max-width: 600px) {
+    /* Formulários e Inscrição */
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .reg-header { padding: 40px 20px 20px; }
+    .reg-form-area { padding: 20px 20px 40px; }
+}

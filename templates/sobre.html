@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Nossa História - JUABP{% endblock %}
+
+{% block content %}
+
+<!-- =========================================
+     HERO: TÍTULO DE IMPACTO
+========================================= -->
+<section class="history-hero">
+    <div class="hero-content">
+        <span class="tag">O TSUNAMI DO NORTE</span>
+        <h1>A História da JUABP</h1>
+        <p class="text">
+            A Juventude Unida Pelo Amor da Bom Pastor (JUABP) é mais do que uma quadrilha: é uma das agremiações folclóricas mais tradicionais, antigas e vitoriosas de Rondônia. Três décadas de uma jornada que transformou uma simples brincadeira paroquial em uma referência de alta performance.
+        </p>
+    </div>
+</section>
+
+<!-- =========================================
+     LINHA DO TEMPO (HISTÓRIA IMPACTANTE)
+========================================= -->
+<section class="timeline-section">
+    <div class="timeline-container">
+
+        <!-- CAPÍTULO 1: 1992 - O NASCIMENTO -->
+        <div class="timeline-item">
+            <div class="timeline-year">1992</div>
+            <div class="timeline-content">
+                <h2>O Berço dos Pioneiros</h2>
+                <p class="text">
+                    Tudo começou em Porto Velho, no bairro Areal da Floresta. A agremiação nasceu ligada à Igreja do Bom Pastor, fundada por jovens da própria paróquia que buscavam criar uma atividade recreativa e cultural para animar os festejos da igreja. O nome reflete a nossa origem: <strong>J</strong>uventude <strong>U</strong>nida <strong>p</strong>elo <strong>A</strong>mor <strong>d</strong>a <strong>B</strong>om <strong>P</strong>astor.                </p>
+                <p class="text">
+                    Nos primeiros anos, éramos a essência da tradição "caipira": roupas remendadas, chapéus de palha e a marcação clássica do sertão, tudo adaptado com o suor da nossa terra amazônica.
+                </p>
+                <div class="timeline-image">
+                    <img src="{{ url_for('static', filename='img/Logo.png') }}" alt="Fundação da JUABP">
+                </div>
+            </div>
+        </div>
+
+        <!-- CAPÍTULO 2: 2006 - O BOOM E A CONSAGRAÇÃO -->
+        <div class="timeline-item">
+            <div class="timeline-year">2006</div>
+            <div class="timeline-content">
+                <h2>A Conquista que Mudou Tudo</h2>
+                <p class="text">
+                    O ano de 2006 marcou nossa história ao consagrar a JUABP como campeã, pela primeira vez, do Arraial Flor do Maracujá. Sob a liderança de João Big, que assumiu a direção em 2002/2003, o grupo quebrou hegemonias de grupos considerados "grandes" na época. Foi conquistado com suor e sacrifício, marcando nossa transição definitiva para uma potência do circuito junino.
+                </p>
+                <p class="text">
+                    Esse sucesso impulsionou nossa mudança em 2007 para a quadra da Escola Jesus Burlamaqui, nosso quartel-general. Ali, passamos a ensaiar quatro dias por semana, preparando o terreno para nos tornarmos a dinastia que somos hoje.
+                </p>
+                <div class="timeline-image">
+                    <img src="{{ url_for('static', filename='img/ateemmovimento.jpeg') }}" alt="A Conquista de 2006">
+                </div>
+            </div>
+        </div>
+
+        <!-- CAPÍTULO 3: O LEGADO -->
+        <div class="timeline-item">
+            <div class="timeline-year">Hoje</div>
+            <div class="timeline-content">
+                <h2>Reconhecimento Nacional</h2>
+                <p class="text">
+                    Somos tetracampeões do Flor do Maracujá: 2006, 2016, 2019 e 2025. Cada troféu carrega a nossa história de superação e a nossa marca registrada: a teatralidade intensa. De "O Auto da Compadecida" a "Lampião: nem herói, nem vilão", transformamos enredos em lições de cultura.
+                </p>
+                <p class="text">
+                    Hoje, somos embaixadores do folclore nortista. Levamos nossa força para palcos nacionais como o Iguatu Festeiro e o Arraial Brasil, provando que o Tsunami do Norte não apenas dança: ele domina a arena com cerca de 140 componentes e uma produção cênica impecável.
+                </p>
+                <div class="timeline-image">
+                    <img src="{{ url_for('static', filename='img/campea.jpeg') }}" alt="Conquistas JUABP">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =========================================
+     DIREÇÃO (Equipe)
+========================================= -->
+<section class="diretores">
+    <span class="tag">DIREÇÃO</span>
+    <h2>Equipe de Direção</h2>
+    <p class="text">Lideranças comprometidas em conduzir a alma do Tsunami do Norte.</p>
+
+    <div class="diretores-grid">
+        {% for cargo in ['Direção Geral', 'Direção Artística', 'Coreografia'] %}
+        <div class="diretor">
+            <div class="foto">
+                <div class="foto-placeholder"><span class="icon">👤</span></div>
+            </div>
+            <h3>Nome do Diretor</h3>
+            <p class="text">{{ cargo }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ evento.nome }} - JUABP{% endblock %}
+
+{% block content %}
+
+<!-- =========================================
+     HERO IMERSIVO
+========================================= -->
+{% set bg_imagem = url_for('static', filename='img/' + evento.banner) %}
+<div class="event-hero" style="background-image: url('{{ bg_imagem }}');">
+    <div class="event-hero-content">
+        <span class="tag">{{ evento.categoria|upper }}</span>
+        
+        <h1>{{ evento.nome }}</h1>
+        
+        <p class="text">{{ evento.descricao }}</p>
+
+        <!-- Informações do Evento -->
+        <div class="event-meta">
+            <div class="meta-item">
+                <span class="meta-label">Último Registro</span>
+                <span class="meta-value">{{ evento.edicoes[0].ano if evento.edicoes else '---' }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Total de Edições</span>
+                <span class="meta-value">{{ evento.edicoes|length }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Anos Ativos</span>
+                <span class="meta-value">{{ anos|length }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================
+     OUTROS EVENTOS (NAVEGAÇÃO RÁPIDA)
+========================================= -->
+{% if relacionados %}
+<section style="background:transparent; border:none; padding:0; margin-top:80px;">
+    <h2>Outros Eventos</h2>
+    <p class="text" style="margin-top: 5px;">Continue explorando a história da JUABP.</p>
+    
+    <div class="event-grid" style="margin-top:25px;">
+        {% for rel in relacionados %}
+        <a href="/evento/{{ rel.slug }}" class="event-box">
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='img/' + rel.banner) }}" alt="{{ rel.nome }}">
+            </div>
+            <span class="tag">{{ rel.categoria|upper }}</span>
+            <h3>{{ rel.nome }}</h3>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

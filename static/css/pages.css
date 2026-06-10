@@ -1,0 +1,159 @@
+/* =========================================
+   PÁGINA SOBRE: HERO E TIMELINE
+========================================= */
+.history-hero {
+    text-align: center; padding: 120px 20px 60px;
+    background: radial-gradient(circle at top center, rgba(250,204,21,0.08), transparent 60%); animation: fadeUp 0.8s ease;
+}
+.history-hero h1 { font-size: 56px; color: var(--accent); margin: 15px 0; letter-spacing: -1px; }
+.history-hero .text { max-width: 650px; margin: 0 auto; font-size: 18px; color: rgba(255, 255, 255, 0.9); line-height: 1.6; }
+
+.timeline-section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+.timeline-container { position: relative; }
+.timeline-container::before { content: ''; position: absolute; top: 0; bottom: 0; left: 40px; width: 2px; background: linear-gradient(to bottom, transparent, var(--accent), transparent); opacity: 0.5; }
+
+.timeline-item { position: relative; display: flex; gap: 40px; margin-bottom: 80px; }
+.timeline-item::before {
+    content: ''; position: absolute; left: 33px; top: 10px; width: 16px; height: 16px;
+    background: var(--bg); border: 3px solid var(--accent); border-radius: 50%; z-index: 2; box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+}
+.timeline-year { flex: 0 0 120px; font-size: 28px; font-weight: bold; color: var(--accent); text-align: right; padding-top: 2px; }
+.timeline-content { flex: 1; background: var(--grad-box); border: 1px solid var(--border-dark); padding: 40px; border-radius: 16px; transition: 0.3s; }
+.timeline-content:hover { border-color: rgba(250, 204, 21, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.timeline-content h2 { font-size: 32px; color: #ffffff; margin-bottom: 20px; width: 100%; text-align: left; }
+.timeline-content .text {
+    font-size: 17px; color: rgba(255, 255, 255, 0.85); line-height: 1.8; margin-bottom: 20px; text-align: justify;
+    width: 100%; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding: 0;
+}
+.timeline-image {
+    width: 100%; margin-left: 0; margin-right: 0; background: rgba(0, 0, 0, 0.2); 
+    border-radius: 12px; overflow: hidden; margin-top: 30px; border: 1px solid var(--border-dark);
+    transition: transform 0.4s ease; display: flex; justify-content: center; align-items: center;
+}
+.timeline-image:hover { transform: scale(1.02); }
+.timeline-image img { width: 100%; height: auto; max-height: 450px; object-fit: contain; display: block; }
+
+/* =========================================
+   PÁGINA SOBRE: DIRETORES
+========================================= */
+.diretores { margin-top: 100px; padding-bottom: 80px; text-align: center; }
+.diretores h2 { font-size: 36px; margin-top: 15px; margin-bottom: 15px; color: #ffffff; }
+.diretores > .text { margin: 0 auto; max-width: 600px; color: rgba(255, 255, 255, 0.85); font-size: 17px; line-height: 1.6; }
+.diretores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; padding: 0 20px; }
+.diretor { background: var(--grad-box); padding: 20px; border-radius: 16px; border: 1px solid var(--border-dark); transition: 0.3s; text-align: center; }
+.diretor:hover { border-color: var(--accent); transform: translateY(-10px); }
+.foto { width: 100%; height: 300px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; }
+.foto-placeholder { width: 100%; height: 100%; background: linear-gradient(145deg, #1a1a1a, #111); display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(250, 204, 21, 0.2); }
+.foto-placeholder .icon { font-size: 48px; opacity: 0.3; }
+.diretor h3 { font-size: 20px; margin-bottom: 5px; color: #fff; }
+.diretor .text { font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+
+/* =========================================
+   HOME: CTA BANNER SECUNDÁRIO
+========================================= */
+.cta-banner {
+    position: relative; margin-top: 100px; margin-bottom: 40px; padding: 80px 30px; border-radius: 20px; text-align: center;
+    overflow: hidden; background: radial-gradient(circle at center, rgba(185,28,28,0.15), var(--bg) 70%); border: 1px solid var(--border-dark);
+}
+.cta-banner::before { content: ""; position: absolute; inset: 0; background: url('../img/ateemmovimento.jpeg') center/cover; opacity: 0.05; z-index: 0; }
+.cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+.cta-content h2 { font-size: 42px; color: #fff; margin-bottom: 15px; }
+.cta-content .text { font-size: 18px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+
+/* =========================================
+   EVENTO DETALHE (NOVO DESIGN IMERSIVO)
+========================================= */
+.event-hero {
+    position: relative;
+    width: 100%;
+    min-height: 550px;
+    border-radius: 24px;
+    margin-top: 40px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-end;
+    padding: 60px;
+    border: 1px solid var(--border-dark);
+    overflow: hidden;
+    animation: fadeUp 0.8s ease;
+}
+
+.event-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--bg) 10%, rgba(5,5,5,0.85) 45%, transparent 100%);
+    z-index: 1;
+}
+
+.event-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.event-hero-content h1 {
+    font-size: clamp(42px, 5vw, 64px);
+    color: var(--accent);
+    margin: 15px 0;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.event-hero-content .text {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    max-width: 650px;
+}
+
+.event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.meta-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.meta-value {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* =========================================
+   PÁGINA DE INSCRIÇÃO
+========================================= */
+.registration-wrapper {
+    display: flex; justify-content: center; align-items: center; padding: 100px 20px 120px; min-height: 85vh;
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.95)), url('../img/inscricao.jpeg') center/cover no-repeat !important;
+    border: none !important; box-shadow: none !important;
+}
+.registration-card-single {
+    width: 100%; max-width: 650px; background: rgba(15, 15, 15, 0.55); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); overflow: hidden;
+}
+.reg-header { text-align: center; padding: 50px 40px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at top center, rgba(250,204,21,0.08), transparent 70%); }
+.reg-header .tag { margin: 0 auto 15px; }
+.reg-header h1 { font-size: 38px; color: var(--accent); margin-bottom: 12px; }
+.reg-header .text { color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.6; max-width: 450px; margin: 0 auto; }
+.reg-form-area { padding: 30px 40px 50px; background: rgba(255,255,255,0.01); }

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Eventos - JUABP{% endblock %}
+
+{% block content %}
+
+<section style="text-align: center; margin-top: 40px; background: transparent; border: none; padding: 0;">
+    <span class="tag">NOSSA TRAJETÓRIA</span>
+    <h1 style="font-size: 48px; color: var(--accent); margin-bottom: 15px;">Eventos</h1>
+    <p class="text" style="margin: 0 auto; max-width: 600px;">
+        Conheça os concursos, festivais, viagens e apresentações que fazem parte da história da JUABP.
+    </p>
+</section>
+
+<section>
+    <form method="GET" class="filters" style="display: flex; gap: 10px;">
+        <input 
+            type="text" 
+            name="busca" 
+            placeholder="Buscar evento..." 
+            value="{{ busca_ativa or '' }}"
+            style="flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255,255,255,0.05); color: #fff;"
+        >
+        <button type="submit" class="btn" style="padding: 12px 24px;">Buscar</button>
+    </form>
+
+    <br>
+
+    <div class="filters">
+        <a href="/eventos" class="filter-btn {% if not categoria_ativa %}active{% endif %}">
+            Todos
+        </a>
+        
+        {% for categoria in categorias %}
+        <a href="/eventos?categoria={{ categoria }}" class="filter-btn {% if categoria == categoria_ativa %}active{% endif %}">
+            {{ categoria|capitalize }}
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% if eventos %}
+<section>
+    <div class="event-grid">
+        {% for e in eventos %}
+        <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="event-box">
+            
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='img/' + e.banner) }}" alt="{{ e.nome }}">
+            </div>
+            
+            <div class="event-content">
+                <span class="tag" style="font-size: 10px; margin-bottom: 10px;">{{ e.categoria|capitalize }}</span>
+                <h3>{{ e.nome }}</h3>
+                <p class="text" style="font-size: 13px;">{{ e.descricao }}</p>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border-dark); margin-top: 20px; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--accent);">
+                <span>{{ e.edicoes|length }} edições registradas</span>
+                <span>Ver detalhes &rarr;</span>
+            </div>
+            
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% else %}
+<section style="text-align: center; padding: 80px 20px;">
+    <h2 style="font-size: 28px; color: var(--muted); margin-bottom: 10px;">Nenhum evento encontrado</h2>
+    <p class="text" style="margin: 0 auto;">Tente alterar os filtros ou realizar uma nova busca.</p>
+</section>
+{% endif %}
+
+{% endblock %}

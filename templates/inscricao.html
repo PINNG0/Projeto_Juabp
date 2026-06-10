@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscrição - JUABP{% endblock %}
+
+{% block content %}
+
+<div class="registration-wrapper">
+
+    <div class="registration-card-single">
+        
+        <div class="reg-header">
+            <span class="tag">TEMPORADA 2026</span>
+            <h1>INSCRIÇÃO JUABP</h1>
+            <p class="text">
+                Preencha os dados abaixo para fazer parte da nossa quadrilha e garantir sua participação nesta temporada.
+            </p>
+        </div>
+
+        <div class="reg-form-area">
+            
+            {% if erro %}
+                <div class="error-box">
+                    <p>{{ erro }}</p>
+                </div>
+            {% endif %}
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="success-box">
+                      <p>✅ {{ message }}</p>
+                      <p style="font-size: 13px; margin-top: 5px; color: rgba(255,255,255,0.7); font-weight: normal;">
+                          Você será redirecionado para a Home em instantes...
+                      </p>
+                  </div>
+                  
+                  <script>
+                      setTimeout(function() {
+                          window.location.href = "/";
+                      }, 3500);
+                  </script>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="custom-form">
+
+                <div class="input-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" placeholder="(69) 99999-9999" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" placeholder="Sua cidade" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="mensagem">Mensagem (Opcional)</label>
+                    <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua experiência, se já dançou antes, etc..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-full">
+                    ENVIAR INSCRIÇÃO
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

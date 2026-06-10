@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="hero-grid">
+
+    <div class="hero-text">
+        <span class="tag">TEMPORADA 2026</span>
+        <h1>JUABP</h1>
+        <h2 class="subtitle">TSUNAMI DO NORTE</h2>
+        <p class="text">
+            Um espetáculo de força, identidade e tradição.
+            Em 2026, a JUABP apresenta uma narrativa épica inspirada em Jorge, o guerreiro.
+        </p>
+
+        <div class="actions">
+            <a href="/eventos" class="btn">Ver eventos</a>
+            <a href="/sobre" class="btn-outline">Conhecer a história</a>
+        </div>
+    </div>
+
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Tema 2026 da JUABP">
+    </div>
+
+</div>
+
+<section>
+    <h2>Eventos em Destaque</h2>
+    
+    <div class="event-grid">
+        {% for e in eventos %}
+        <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="event-box">
+            
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='img/' + e.banner) }}" alt="{{ e.nome }}">
+            </div>
+            
+            <h3>{{ e.nome }}</h3>
+            <p class="text">{{ e.descricao }}</p>
+            
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="cta-banner">
+    <div class="cta-content">
+        <h2>Faça parte do Tsunami do Norte</h2>
+        <p class="text">
+            As inscrições para a temporada 2026 já estão abertas. Junte-se à JUABP e viva a emoção de dançar na maior vitrine cultural de Rondônia.
+        </p>
+        <br>
+        <a href="/inscricao" class="btn">Garantir Minha Vaga</a>
+    </div>
+</div>
+
+{% endblock %}
