@@ -64,7 +64,7 @@
 
                 <div class="input-group">
                     <label for="mensagem">Mensagem (Opcional)</label>
-                    <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua experiência, se já dançou antes, etc..."></textarea>
+                    <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua experiência, se já dançou antes, etc...">{% if evento_origem %}Inscrição para o evento: {{ evento_origem }} - {% endif %}</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-full">

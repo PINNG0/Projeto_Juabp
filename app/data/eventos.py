@@ -1,266 +1,103 @@
+# data/eventos.py
+
 eventos = [
-
     # =========================================
-    # CONCURSO DE RAINHAS
+    # CONCURSO DE RAINHAS / SÃO JOÃO DAS RAINHAS
     # =========================================
-
     {
         "id": 1,
-
-        "nome": "Concurso de Rainhas",
-
+        "nome": "São João das Rainhas",
         "slug": "rainhas",
-
-        "categoria": "concurso",
-
+        "categoria": "Festival",
         "descricao": (
-            "Concurso que reúne representantes juninas "
-            "em uma das disputas mais tradicionais "
-            "da cultura popular de Rondônia."
+            "Uma das disputas mais tradicionais da cultura popular de Rondônia. "
+            "O Tsunami do Norte entra em arena com coreografias milimetricamente "
+            "ensaiadas, mesclando dramaticidade, técnica e indumentárias monumentais "
+            "para defender o brilho da nossa agremiação."
         ),
-
-        "banner": "campea.jpeg",
-
+        "banner": "ateemmovimento.jpeg",
         "edicoes": [
-
             {
                 "ano": 2026,
-                "tema": "Tradição e Brilho",
+                "tema": "10º São João das Rainhas",
                 "local": "Porto Velho - RO",
-                "imagem": "campea.jpeg",
-                "descricao": "Participação da JUABP no concurso."
+                "imagem": "ateemmovimento.jpeg",
+                "descricao": "Grande espetáculo popular que lotou a praça e reafirmou a força da nossa cultura no final de semana dos dias 24, 25 e 26 de abril.",
+                "galerias_externas": [
+                    {"nome": "📸 Fotos 3º Dia (JUABP) - Fotto", "url": "https://www.fotto.com.br/10-sao-joao-das-rainhas-3-dia-junina-juabp/e/328434"},
+                    {"nome": "📸 Fotos Último Dia - Fotto", "url": "https://www.fotto.com.br/10-sao-joao-das-rainhas-ultimo-dia/e/327102/"},
+                    {"nome": "📰 Matéria Completa do Evento", "url": "https://humorondoniense.com.br/grande-espetaculo-popular-10o-sao-joao-das-rainhas-lota-praca-e-reafirma-forca-da-cultura-em-porto-velho-evento-acontece-nos-dias-24-25-e-26-de-abril/"}
+                ]
             },
-
             {
                 "ano": 2025,
-                "tema": "Encanto Junino",
+                "tema": "9º São João das Rainhas",
                 "local": "Porto Velho - RO",
                 "imagem": "canga.jpeg",
-                "descricao": "Representação da quadrilha no concurso."
-            },
-
-            {
-                "ano": 2024,
-                "tema": "Raízes do Norte",
-                "local": "Porto Velho - RO",
-                "imagem": "ateemmovimento.jpeg",
-                "descricao": "Participação especial da JUABP."
+                "descricao": "Nona edição do evento de realeza junina com entrada gratuita, celebrando a tradição folclórica no estado.",
+                "galerias_externas": [
+                    {"nome": "📰 Matéria - Rondonotícias", "url": "https://rondonoticias.com.br/noticia/entretenimento/135109/vice-campea-do-flor-do-maracuja-realiza-9-sao-joao-das-rainhas-neste-final-de-semana"},
+                    {"nome": "📰 Matéria - Rondoniaovivo", "url": "https://rondoniaovivo.com/noticia/cultura/2025/02/12/junina-juabp-quadrilha-realiza-o-sao-joao-das-rainhas-neste-final-de-semana-entrada-gratuita.html"},
+                    {"nome": "📁 Arquivos de Fotos - Drive", "url": "https://drive.google.com/drive/folders/1d5AD6xWBXQO0c3gMsCY8zO0-11HbHSPC"}
+                ]
             }
-
-        ]
-    },
-
-    # =========================================
-    # BOTO ROSA
-    # =========================================
-
-    {
-        "id": 2,
-
-        "nome": "Boto Rosa",
-
-        "slug": "boto-rosa",
-
-        "categoria": "festival",
-
-        "descricao": (
-            "Evento cultural inspirado nas lendas "
-            "e tradições amazônicas."
-        ),
-
-        "banner": "canga.jpeg",
-
-        "edicoes": [
-
-            {
-                "ano": 2026,
-                "tema": "Lendas Amazônicas",
-                "local": "Porto Velho - RO",
-                "imagem": "ateemmovimento.jpeg",
-                "descricao": "Espetáculo temático regional."
-            },
-
-            {
-                "ano": 2025,
-                "tema": "Mistérios do Rio",
-                "local": "Porto Velho - RO",
-                "imagem": "campea.jpeg",
-                "descricao": "Participação cultural da JUABP."
-            }
-
         ]
     },
 
     # =========================================
     # FLOR DO MARACUJÁ
     # =========================================
+    {
+        "id": 2,
+        "nome": "Arraial Flor do Maracujá",
+        "slug": "flor-do-maracuja",
+        "categoria": "Competição Oficial",
+        "descricao": (
+            "O maior e mais imponente festival folclórico do estado de Rondônia. "
+            "A arena sagrada onde a JUABP descarrega toda a força do Tsunami, "
+            "acumulando títulos históricos e arrastando multidões."
+        ),
+        "banner": "campea.jpeg",
+        "edicoes": [
+            {
+                "ano": 2025,
+                "tema": "Tetracampeã do Flor do Maracujá",
+                "local": "Porto Velho - RO",
+                "imagem": "campea.jpeg",
+                "descricao": "Apresentação antológica e de alta performance que consagrou a JUABP como Tetracampeã do maior arraial de Rondônia.",
+                "galerias_externas": [
+                    {"nome": "📸 Fotos Oficiais - Fotto", "url": "https://www.fotto.com.br/juabp-flor-do-maracuja-2025/e/153083/"},
+                    {"nome": "📁 Pasta de Arquivos - Drive", "url": "https://drive.google.com/drive/folders/1z2q8wEjZluyivPagdj1nvDfICBjvQwNz"}
+                ]
+            }
+        ]
+    },
 
+    # =========================================
+    # MOÇÃO DE APLAUSOS E HONRARIAS
+    # =========================================
     {
         "id": 3,
-
-        "nome": "Arraial Flor do Maracujá",
-
-        "slug": "flor-do-maracuja",
-
-        "categoria": "festival",
-
+        "nome": "Moção de Aplausos",
+        "slug": "mocao-de-aplausos",
+        "categoria": "Reconhecimento Oficial",
         "descricao": (
-            "Maior festival folclórico e junino "
-            "do estado de Rondônia."
+            "O reconhecimento oficial e institucional do Poder Legislativo "
+            "ao trabalho de excelência, impacto social e à preservação "
+            "da cultura junina promovida pelo Tsunami do Norte."
         ),
-
-        "banner": "ateemmovimento.jpeg",
-
+        "banner": "nocaodeaplauso.jpg",
         "edicoes": [
-
-            {
-                "ano": 2026,
-                "tema": "Tsunami do Norte",
-                "local": "Porto Velho - RO",
-                "imagem": "ateemmovimento.jpeg",
-                "descricao": "Apresentação oficial da JUABP."
-            },
-
             {
                 "ano": 2025,
-                "tema": "Orgulho da Amazônia",
-                "local": "Porto Velho - RO",
-                "imagem": "canga.jpeg",
-                "descricao": "Participação competitiva no festival."
-            },
-
-            {
-                "ano": 2024,
-                "tema": "Cultura que Encanta",
-                "local": "Porto Velho - RO",
-                "imagem": "campea.jpeg",
-                "descricao": "Representação da quadrilha no arraial."
+                "tema": "Homenagem Histórica na Câmara Municipal",
+                "local": "Câmara Municipal de Porto Velho",
+                "imagem": "nocaodeaplauso.jpg",
+                "descricao": "Recebimento da Moção de Aplausos pelo marco histórico de grande relevância cultural alcançado pela JUABP ao representar Rondônia e a região Norte no Maracanaú (CE), o maior São João do Brasil.",
+                "galerias_externas": [
+                    {"nome": "🖼️ Álbum Oficial - Google Fotos", "url": "https://photos.app.goo.gl/rY47XPVScKuEmqY87"}
+                ]
             }
-
-        ]
-    },
-
-    # =========================================
-    # APRESENTAÇÕES OFICIAIS
-    # =========================================
-
-    {
-        "id": 4,
-
-        "nome": "Apresentações Oficiais",
-
-        "slug": "apresentacoes",
-
-        "categoria": "apresentacao",
-
-        "descricao": (
-            "Apresentações realizadas pela JUABP "
-            "em eventos culturais, festivais e ações públicas."
-        ),
-
-        "banner": "campea.jpeg",
-
-        "edicoes": [
-
-            {
-                "ano": 2026,
-                "tema": "Circuito Cultural",
-                "local": "Porto Velho - RO",
-                "imagem": "campea.jpeg",
-                "descricao": "Participações em eventos culturais."
-            },
-
-            {
-                "ano": 2025,
-                "tema": "Temporada Junina",
-                "local": "Rondônia",
-                "imagem": "canga.jpeg",
-                "descricao": "Apresentações durante o calendário junino."
-            }
-
-        ]
-    },
-
-    # =========================================
-    # VIAGENS
-    # =========================================
-
-    {
-        "id": 5,
-
-        "nome": "Viagens",
-
-        "slug": "viagens",
-
-        "categoria": "viagem",
-
-        "descricao": (
-            "Participações da JUABP em eventos "
-            "e festivais fora de sua cidade sede."
-        ),
-
-        "banner": "canga.jpeg",
-
-        "edicoes": [
-
-            {
-                "ano": 2026,
-                "tema": "Intercâmbio Cultural",
-                "local": "Região Norte",
-                "imagem": "canga.jpeg",
-                "descricao": "Representação cultural em outros municípios."
-            },
-
-            {
-                "ano": 2025,
-                "tema": "Circuito Regional",
-                "local": "Rondônia",
-                "imagem": "ateemmovimento.jpeg",
-                "descricao": "Participações externas da quadrilha."
-            }
-
-        ]
-    },
-
-    # =========================================
-    # PREMIAÇÕES E CONQUISTAS
-    # =========================================
-
-    {
-        "id": 6,
-
-        "nome": "Premiações e Conquistas",
-
-        "slug": "premiacoes",
-
-        "categoria": "conquista",
-
-        "descricao": (
-            "Registro histórico das conquistas, "
-            "premiações e reconhecimentos recebidos pela JUABP."
-        ),
-
-        "banner": "campea.jpeg",
-
-        "edicoes": [
-
-            {
-                "ano": 2026,
-                "tema": "Reconhecimentos",
-                "local": "Porto Velho - RO",
-                "imagem": "campea.jpeg",
-                "descricao": "Conquistas registradas durante a temporada."
-            },
-
-            {
-                "ano": 2025,
-                "tema": "Destaques da Temporada",
-                "local": "Porto Velho - RO",
-                "imagem": "canga.jpeg",
-                "descricao": "Premiações recebidas pela quadrilha."
-            }
-
         ]
     }
-
 ]

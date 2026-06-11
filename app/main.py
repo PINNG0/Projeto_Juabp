@@ -1,4 +1,5 @@
 import os
+import csv
 from flask import (
     Flask,
     render_template,
@@ -6,9 +7,13 @@ from flask import (
     redirect,
     abort,
     url_for,
-    flash
+    flash,
+    session,
+    Response
 )
 
+from database import db
+from models import Inscricao
 from data.eventos import eventos
 
 # =========================================
@@ -20,21 +25,28 @@ app = Flask(
     static_folder='../static'
 )
 
-# Melhor Prática: Busca a chave secreta no ambiente (segurança) ou usa uma padrão para testes
+# Configurações do Banco de Dados SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///juabp.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('SECRET_KEY', 'chave_secreta_super_segura_aqui')
+
+# Vincula o banco de dados ao app
+db.init_app(app)
+
+# Cria as tabelas automaticamente se não existirem
+with app.app_context():
+    db.create_all()
 
 # =========================================
 # FUNÇÕES AUXILIARES
 # =========================================
 def buscar_evento_por_slug(slug):
-    """Retorna o evento correspondente ao slug ou None se não encontrar."""
     return next(
         (evento for evento in eventos if evento.get('slug') == slug), 
         None
     )
 
 def obter_categorias():
-    """Gera uma lista ordenada sem repetições das categorias de eventos."""
     categorias = {evento.get('categoria') for evento in eventos if evento.get('categoria')}
     return sorted(categorias)
 
@@ -50,6 +62,10 @@ def home():
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
+
+@app.route('/galeria')
+def galeria():
+    return render_template('galeria.html')
 
 
 @app.route('/eventos')
@@ -95,7 +111,6 @@ def evento_detalhe(slug):
     edicoes = sorted(edicoes, key=lambda x: x.get('ano', 0), reverse=True)
     anos = sorted({edicao.get('ano') for edicao in evento.get('edicoes', [])}, reverse=True)
     
-    # Pega até 3 eventos relacionados excluindo o atual
     relacionados = [e for e in eventos if e.get('slug') != evento.get('slug')][:3]
 
     return render_template(
@@ -108,12 +123,13 @@ def evento_detalhe(slug):
     )
 
 # =========================================
-# FORMULÁRIO DE INSCRIÇÃO
+# FORMULÁRIO DE INSCRIÇÃO CONECTADO AO BANCO
 # =========================================
 @app.route('/inscricao', methods=['GET', 'POST'])
 def inscricao():
+    evento_origem = request.args.get('evento', '').strip()
+
     if request.method == 'POST':
-        # O .strip() limpa espaços em branco acidentais digitados pelo usuário
         nome = request.form.get('nome', '').strip()
         telefone = request.form.get('telefone', '').strip()
         cidade = request.form.get('cidade', '').strip()
@@ -122,23 +138,101 @@ def inscricao():
         if not nome or not telefone or not cidade:
             return render_template(
                 'inscricao.html',
-                erro='Preencha todos os campos obrigatórios.'
+                erro='Preencha todos os campos obrigatórios.',
+                evento_origem=evento_origem
             )
 
-        print("\n====================================")
-        print("🎉 NOVA INSCRIÇÃO RECEBIDA 🎉")
-        print("====================================")
-        print(f"Nome:     {nome}")
-        print(f"Telefone: {telefone}")
-        print(f"Cidade:   {cidade}")
-        if mensagem:
-            print(f"Mensagem: {mensagem}")
-        print("====================================\n")
+        try:
+            nova_inscricao = Inscricao(
+                nome=nome,
+                telefone=telefone,
+                cidade=cidade,
+                mensagem=mensagem
+            )
 
-        flash(f'Inscrição de {nome} realizada com sucesso!')
-        return render_template('inscricao.html')
+            db.session.add(nova_inscricao)
+            db.session.commit()
 
-    return render_template('inscricao.html')
+            print("\n====================================")
+            print("🎉 INSCRIÇÃO SALVA NO BANCO! 🎉")
+            print("====================================")
+            print(f"Nome:     {nome}")
+            print(f"Telefone: {telefone}")
+            print("====================================\n")
+
+            flash(f'Inscrição de {nome} realizada com sucesso!')
+            return render_template('inscricao.html', evento_origem=evento_origem)
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"ERRO DE BANCO DE DADOS: {e}")
+            return render_template(
+                'inscricao.html',
+                erro='Ocorreu um erro ao salvar sua inscrição. Tente novamente mais tarde.',
+                evento_origem=evento_origem
+            )
+
+    return render_template('inscricao.html', evento_origem=evento_origem)
+
+# =========================================
+# SISTEMA DE LOGIN & ADMINISTRAÇÃO
+# =========================================
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        senha = request.form.get('senha')
+        
+        if senha == '@Tsunami2026': 
+            session['logado'] = True
+            return redirect(url_for('admin'))
+        else:
+            return render_template('login.html', erro='Senha incorreta. Acesso negado.')
+            
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logado', None)
+    return redirect(url_for('home'))
+
+@app.route('/admin')
+def admin():
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+        
+    todas_inscricoes = Inscricao.query.order_by(Inscricao.id.desc()).all()
+    return render_template('admin.html', inscritos=todas_inscricoes)
+
+@app.route('/admin/deletar/<int:id>', methods=['POST'])
+def deletar_inscricao(id):
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+        
+    inscricao = Inscricao.query.get_or_404(id)
+    try:
+        db.session.delete(inscricao)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao deletar: {e}")
+        
+    return redirect(url_for('admin'))
+
+@app.route('/admin/exportar')
+def exportar_csv():
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+        
+    inscricoes = Inscricao.query.order_by(Inscricao.id.desc()).all()
+    
+    def gerar_csv():
+        yield 'ID,Nome,WhatsApp,Cidade,Mensagem,Data\n'
+        for i in inscricoes:
+            data_formatada = i.data_cadastro.strftime("%d/%m/%Y") if i.data_cadastro else ""
+            msg = i.mensagem.replace('\n', ' ').replace('\r', '') if i.mensagem else '---'
+            yield f'{i.id},{i.nome},{i.telefone},{i.cidade},{msg},{data_formatada}\n'
+            
+    return Response(gerar_csv(), mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename=inscricoes_juabp.csv'})
 
 # =========================================
 # TRATAMENTO DE ERROS
@@ -151,9 +245,6 @@ def pagina_nao_encontrada(error):
 def erro_interno(error):
     return render_template('500.html'), 500
 
-# =========================================
-# INICIAR SERVIDOR
-# =========================================
 if __name__ == '__main__':
     print("\n====================================")
     print("🔥 SERVIDOR INICIANDO...")
