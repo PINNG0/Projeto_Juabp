@@ -3,53 +3,53 @@
 {% block title %}Painel da Diretoria - JUABP{% endblock %}
 
 {% block content %}
-<section style="padding: 150px 20px 50px; max-width: 1200px; margin: 0 auto; min-height: 70vh;">
+<section class="admin-section">
     
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+    <div class="admin-header">
         <div>
             <span class="tag">ÁREA RESTRITA</span>
-            <h1 style="margin: 10px 0 0; font-size: 36px;">Inscrições 2026</h1>
-            <p class="text" style="margin: 5px 0 0;">Total: <strong>{{ inscritos|length }}</strong> inscritos</p>
+            <h1>Inscrições 2026</h1>
+            <p class="text">Total: <strong>{{ inscritos|length }}</strong> inscritos</p>
         </div>
-        <div style="display: flex; gap: 10px;">
-            <a href="/admin/exportar" class="btn" style="background-color: #107c41; color: white; border: none; padding: 12px 20px;">📥 Exportar Planilha</a>
-            <a href="/logout" class="btn" style="background-color: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 12px 20px;">Sair do Painel</a>
+        <div class="admin-actions">
+            <a href="/admin/exportar" class="btn btn-export">📥 Exportar Planilha</a>
+            <a href="/logout" class="btn-outline">Sair do Painel</a>
         </div>
     </div>
 
-    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 900px;">
+    <div class="admin-table-container">
+        <table class="admin-table">
             <thead>
-                <tr style="background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border);">
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px;">ID</th>
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px;">Nome</th>
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px;">WhatsApp</th>
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px;">Cidade</th>
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px;">Mensagem / Experiência</th>
-                    <th style="padding: 15px 20px; color: var(--accent); font-size: 14px; text-align: center;">Ações</th>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>WhatsApp</th>
+                    <th>Cidade</th>
+                    <th>Mensagem / Experiência</th>
+                    <th style="text-align: center;">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for pessoa in inscritos %}
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 15px 20px; color: var(--muted);">#{{ pessoa.id }}</td>
-                    <td style="padding: 15px 20px; font-weight: bold;">{{ pessoa.nome }}</td>
-                    <td style="padding: 15px 20px;">
-                        <a href="https://wa.me/55{{ pessoa.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold;">
+                <tr>
+                    <td style="color: var(--muted);">#{{ pessoa.id }}</td>
+                    <td style="font-weight: bold;">{{ pessoa.nome }}</td>
+                    <td>
+                        <a href="https://wa.me/55{{ pessoa.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}" target="_blank" rel="noopener noreferrer" class="link-whatsapp">
                             {{ pessoa.telefone }}
                         </a>
                     </td>
-                    <td style="padding: 15px 20px; color: var(--muted);">{{ pessoa.cidade }}</td>
-                    <td style="padding: 15px 20px; font-size: 14px; color: var(--muted);">{{ pessoa.mensagem or '---' }}</td>
-                    <td style="padding: 15px 20px; text-align: center;">
+                    <td style="color: var(--muted);">{{ pessoa.cidade }}</td>
+                    <td style="font-size: 14px; color: var(--muted);">{{ pessoa.mensagem or '---' }}</td>
+                    <td style="text-align: center;">
                         <form action="/admin/deletar/{{ pessoa.id }}" method="POST" onsubmit="return confirm('Atenção: Tem certeza que deseja apagar a inscrição de {{ pessoa.nome }}?');" style="margin: 0;">
-                            <button type="submit" style="background: #ff4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px;">Excluir</button>
+                            <button type="submit" class="btn-delete">Excluir</button>
                         </form>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="6" style="padding: 30px; text-align: center; color: var(--muted);">Nenhuma inscrição recebida ainda.</td>
+                    <td colspan="6" class="empty-table-msg">Nenhuma inscrição recebida ainda.</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -2,56 +2,81 @@
 
 {% block content %}
 
-<div class="hero-grid">
-
-    <div class="hero-text">
-        <span class="tag">TEMPORADA 2026</span>
-        <h1>JUABP</h1>
-        <h2 class="subtitle">TSUNAMI DO NORTE</h2>
-        <p class="text">
-            Um espetáculo de força, identidade e tradição.
-            Em 2026, a JUABP apresenta uma narrativa épica inspirada em Jorge, o guerreiro.
-        </p>
-
-        <div class="actions">
-            <a href="/eventos" class="btn">Ver eventos</a>
-            <a href="/sobre" class="btn-outline">Conhecer a história</a>
-        </div>
-    </div>
-
-    <div class="hero-image">
-        <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Tema 2026 da JUABP">
-    </div>
-
-</div>
-
-<section>
-    <h2>Eventos em Destaque</h2>
-    
-    <div class="event-grid">
-        {% for e in eventos %}
-        <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="event-box">
-            
-            <div class="about-image">
-                <img src="{{ url_for('static', filename='img/' + e.banner) }}" alt="{{ e.nome }}">
+<div class="hero-wrapper">
+    <div class="home-hero">
+        <div style="flex: 1.2; min-width: 300px;">
+            <div class="fade-up delay-1">
+                <span class="tag" style="background: rgba(255, 215, 0, 0.1); color: #FFD700; border: 1px solid #FFD700; margin-bottom: 20px; padding: 8px 16px;">TEMPORADA 2026</span>
             </div>
             
-            <h3>{{ e.nome }}</h3>
-            <p class="text">{{ e.descricao }}</p>
+            <h1 class="hero-title fade-up delay-1">JUABP</h1>
+            <h2 class="hero-subtitle fade-up delay-2">Tsunami do Norte</h2>
+            
+            <p class="text fade-up delay-3" style="font-size: 1.25rem; line-height: 1.7; margin-bottom: 45px; max-width: 550px; color: #ccc;">
+                Um espetáculo de força, identidade e tradição. A arena vai tremer com a nossa narrativa épica inspirada em <strong style="color: #fff;">Jorge, o guerreiro</strong>.
+            </p>
+
+            <div class="fade-up delay-4" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <a href="/sobre" class="btn btn-pulsante" style="padding: 18px 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase;">Conhecer a História</a>
+                <a href="/eventos" class="btn-outline" style="padding: 18px 40px; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.3); color: #fff;">Ver Eventos</a>
+            </div>
+        </div>
+
+        <div class="camisa-container fade-up delay-3">
+            <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Camisa Tema 2026" class="camisa-flutuante">
+        </div>
+    </div>
+    
+    <div class="scroll-indicator">
+        <span>A Essência</span>
+        <div class="scroll-arrow">↓</div>
+    </div>
+</div>
+
+<section style="padding: 100px 20px 60px; max-width: 1300px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <span class="tag" style="margin-bottom: 12px; background: rgba(255,255,255,0.05);">MEMÓRIAS DE OURO</span>
+            <h2 style="font-size: 2.8rem; margin: 0; font-weight: 800; letter-spacing: -1px;">O Cenário de Vitórias</h2>
+        </div>
+        <a href="/eventos" style="color: var(--accent); text-decoration: none; font-size: 1.1rem; font-weight: bold; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">Ver todos os registos ➔</a>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px;">
+        {% for e in eventos %}
+        <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="evento-card">
+            
+            <div class="evento-img-container">
+                <img src="{{ url_for('static', filename='img/' + e.banner) }}" alt="{{ e.nome }}">
+                <div style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.85); padding: 6px 14px; border-radius: 6px; font-size: 11px; color: #FFD700; border: 1px solid rgba(255,215,0,0.3); font-weight: 800; letter-spacing: 1.5px; backdrop-filter: blur(5px);">
+                    {{ e.categoria | upper }}
+                </div>
+            </div>
+            
+            <div style="padding: 35px; display: flex; flex-direction: column; flex-grow: 1;">
+                <h3 style="margin: 0 0 15px; font-size: 1.6rem; font-weight: 700;">{{ e.nome }}</h3>
+                <p class="text" style="font-size: 1.05rem; color: #aaa; margin: 0 0 25px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1;">
+                    {{ e.descricao }}
+                </p>
+                <div style="font-size: 0.95rem; font-weight: bold; color: #fff;">
+                    Explorar Evento <span class="seta-animada">➔</span>
+                </div>
+            </div>
             
         </a>
         {% endfor %}
     </div>
 </section>
 
-<div class="cta-banner">
+<div class="cta-gigante">
+    <div class="cta-bg"></div>
     <div class="cta-content">
-        <h2>Faça parte do Tsunami do Norte</h2>
-        <p class="text">
-            As inscrições para a temporada 2026 já estão abertas. Junte-se à JUABP e viva a emoção de dançar na maior vitrine cultural de Rondônia.
+        <span class="tag" style="background: rgba(220, 20, 60, 0.2); color: var(--accent); border: 1px solid var(--accent); margin-bottom: 20px; display: inline-block;">INSCRIÇÕES 2026</span>
+        <h2 style="font-size: clamp(2.2rem, 6vw, 4rem); margin-bottom: 25px; color: #fff; line-height: 1.1; font-weight: 900; text-transform: uppercase;">Sinta a Força do Tsunami</h2>
+        <p class="text" style="font-size: 1.25rem; color: #eee; margin-bottom: 45px; line-height: 1.6;">
+            A arena espera por si. Junte-se à JUABP e viva a emoção inigualável de defender o nosso pavilhão na maior vitrine cultural de Rondônia.
         </p>
-        <br>
-        <a href="/inscricao" class="btn">Garantir Minha Vaga</a>
+        <a href="/inscricao" class="btn btn-pulsante" style="padding: 20px 50px; font-size: 1.3rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Garantir Minha Vaga</a>
     </div>
 </div>
 

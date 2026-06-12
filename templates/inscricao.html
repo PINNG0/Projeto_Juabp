@@ -44,6 +44,8 @@
             {% endwith %}
 
             <form method="POST" class="custom-form">
+                
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
                 <div class="input-group">
                     <label for="nome">Nome Completo</label>

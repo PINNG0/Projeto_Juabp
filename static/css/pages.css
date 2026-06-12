@@ -1,5 +1,91 @@
 /* =========================================
-   PÁGINA SOBRE: HERO E TIMELINE
+   1. HOME: HERO E ANIMAÇÕES
+========================================= */
+.hero-wrapper {
+    position: relative; overflow: hidden; padding-bottom: 60px;
+    background: radial-gradient(circle at 70% 50%, rgba(220, 20, 60, 0.05), transparent 50%),
+                radial-gradient(circle at 30% 80%, rgba(255, 215, 0, 0.03), transparent 40%);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.home-hero {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    min-height: 85vh; gap: 40px; padding: 40px 20px; max-width: 1300px; margin: 0 auto;
+    position: relative; z-index: 2;
+}
+.hero-title {
+    font-size: clamp(4.5rem, 12vw, 9rem); font-weight: 900; line-height: 0.85; margin: 0;
+    background: linear-gradient(180deg, #FFFFFF 0%, #a8a8a8 50%, #555555 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-transform: uppercase; letter-spacing: -2px; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5));
+}
+.hero-subtitle {
+    font-size: clamp(1.2rem, 4vw, 2.2rem); color: var(--accent); letter-spacing: 6px;
+    margin-bottom: 25px; margin-top: 10px; text-transform: uppercase; font-weight: 700;
+    text-shadow: 0 0 20px rgba(220, 20, 60, 0.6);
+}
+.camisa-container { flex: 1; min-width: 300px; text-align: center; position: relative; }
+.camisa-container::before {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 350px; height: 350px; filter: blur(50px); z-index: -1;
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.2) 0%, rgba(255, 215, 0, 0.1) 40%, transparent 70%);
+    animation: pulsar-aura 4s infinite alternate;
+}
+.camisa-flutuante {
+    width: 100%; max-width: 550px;
+    filter: drop-shadow(0 25px 35px rgba(0,0,0,0.9)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.15));
+    animation: flutuar 6s ease-in-out infinite;
+}
+
+/* Home: Efeitos de Fade e Scroll */
+.fade-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.5s; } .delay-4 { animation-delay: 0.7s; }
+.scroll-indicator {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex;
+    flex-direction: column; align-items: center; gap: 8px; color: #777; font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 2px; animation: fadeIn 2s ease forwards 1.5s; opacity: 0;
+}
+.scroll-arrow { font-size: 1.2rem; animation: bounce 2s infinite; color: var(--accent); }
+
+/* Home: Animações Keyframes */
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+@keyframes flutuar { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+@keyframes pulsar-aura { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+@keyframes pulse-btn { 0% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.6); } 70% { box-shadow: 0 0 0 15px rgba(220, 20, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); } }
+
+/* Home: Botões e Cartões */
+.btn-pulsante { background: var(--accent); color: #000; animation: pulse-btn 2s infinite; border: none; transition: all 0.3s; text-decoration: none; }
+.btn-pulsante:hover { transform: scale(1.05); filter: brightness(1.2); }
+.btn-outline { text-decoration: none; transition: all 0.3s; }
+.btn-outline:hover { background: rgba(255,255,255,0.1); }
+.evento-card {
+    background: linear-gradient(180deg, #161616 0%, #050505 100%); border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px; overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex; flex-direction: column; text-decoration: none; color: inherit; position: relative;
+}
+.evento-card::after { content: ''; position: absolute; inset: 0; border-radius: 16px; border: 2px solid transparent; transition: all 0.4s ease; pointer-events: none; }
+.evento-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(220, 20, 60, 0.2); }
+.evento-card:hover::after { border-color: var(--accent); }
+.evento-img-container { height: 240px; overflow: hidden; position: relative; }
+.evento-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+.evento-card:hover .evento-img-container img { transform: scale(1.1) rotate(-1deg); }
+.seta-animada { color: var(--accent); transition: transform 0.3s ease; display: inline-block; }
+.evento-card:hover .seta-animada { transform: translateX(10px); }
+
+/* Home: Banner CTA Gigante */
+.cta-gigante { position: relative; padding: 140px 20px; text-align: center; margin-top: 40px; }
+.cta-bg { position: absolute; inset: 0; background-image: url('../img/ateemmovimento.jpeg'); background-position: center; background-size: cover; background-attachment: fixed; filter: brightness(0.15) contrast(1.2); z-index: 0; }
+.cta-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, #000 0%, transparent 20%, transparent 80%, #000 100%); }
+.cta-content {
+    position: relative; z-index: 1; max-width: 850px; margin: 0 auto; background: rgba(10, 10, 10, 0.6);
+    padding: 60px 40px; border-radius: 24px; backdrop-filter: blur(12px); border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(220,20,60,0.1);
+}
+
+/* =========================================
+   2. PÁGINA SOBRE
 ========================================= */
 .history-hero {
     text-align: center; padding: 120px 20px 60px;
@@ -33,9 +119,7 @@
 .timeline-image:hover { transform: scale(1.02); }
 .timeline-image img { width: 100%; height: auto; max-height: 450px; object-fit: contain; display: block; }
 
-/* =========================================
-   PÁGINA SOBRE: DIRETORES
-========================================= */
+/* Diretores */
 .diretores { margin-top: 100px; padding-bottom: 80px; text-align: center; }
 .diretores h2 { font-size: 36px; margin-top: 15px; margin-bottom: 15px; color: #ffffff; }
 .diretores > .text { margin: 0 auto; max-width: 600px; color: rgba(255, 255, 255, 0.85); font-size: 17px; line-height: 1.6; }
@@ -49,99 +133,39 @@
 .diretor .text { font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
 
 /* =========================================
-   HOME: CTA BANNER SECUNDÁRIO
-========================================= */
-.cta-banner {
-    position: relative; margin-top: 100px; margin-bottom: 40px; padding: 80px 30px; border-radius: 20px; text-align: center;
-    overflow: hidden; background: radial-gradient(circle at center, rgba(185,28,28,0.15), var(--bg) 70%); border: 1px solid var(--border-dark);
-}
-.cta-banner::before { content: ""; position: absolute; inset: 0; background: url('../img/ateemmovimento.jpeg') center/cover; opacity: 0.05; z-index: 0; }
-.cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
-.cta-content h2 { font-size: 42px; color: #fff; margin-bottom: 15px; }
-.cta-content .text { font-size: 18px; color: rgba(255,255,255,0.8); line-height: 1.6; }
-
-/* =========================================
-   EVENTO DETALHE (NOVO DESIGN IMERSIVO)
+   3. EVENTO DETALHE E EDIÇÕES
 ========================================= */
 .event-hero {
-    position: relative;
-    width: 100%;
-    min-height: 550px;
-    border-radius: 24px;
-    margin-top: 40px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: flex-end;
-    padding: 60px;
-    border: 1px solid var(--border-dark);
-    overflow: hidden;
-    animation: fadeUp 0.8s ease;
+    position: relative; width: 100%; min-height: 550px; border-radius: 24px; margin-top: 40px;
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; align-items: flex-end; padding: 60px; border: 1px solid var(--border-dark); overflow: hidden; animation: fadeUp 0.8s ease;
 }
+.event-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 10%, rgba(5,5,5,0.85) 45%, transparent 100%); z-index: 1; }
+.event-hero-content { position: relative; z-index: 2; max-width: 800px; }
+.event-hero-content h1 { font-size: clamp(42px, 5vw, 64px); color: var(--accent); margin: 15px 0; line-height: 1.1; letter-spacing: -1px; }
+.event-hero-content .text { font-size: 18px; color: rgba(255,255,255,0.9); margin-bottom: 25px; line-height: 1.6; max-width: 650px; }
+.event-meta { display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 30px; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+.meta-item { display: flex; flex-direction: column; gap: 5px; }
+.meta-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+.meta-value { font-size: 15px; color: #fff; font-weight: 500; }
 
-.event-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, var(--bg) 10%, rgba(5,5,5,0.85) 45%, transparent 100%);
-    z-index: 1;
+/* Listagem de Edições (Limpeza do HTML) */
+.edicoes-container { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+.edicoes-list { display: flex; flex-direction: column; gap: 40px; margin-top: 40px; }
+.edicao-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 30px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center;
 }
-
-.event-hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
+.edicao-img-wrapper { border-radius: 12px; overflow: hidden; height: 250px; }
+.edicao-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.album-link {
+    padding: 8px 14px; font-size: 13px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: #fff; text-decoration: none; border-radius: 6px; transition: 0.3s; display: inline-block; margin-top: 5px;
 }
-
-.event-hero-content h1 {
-    font-size: clamp(42px, 5vw, 64px);
-    color: var(--accent);
-    margin: 15px 0;
-    line-height: 1.1;
-    letter-spacing: -1px;
-}
-
-.event-hero-content .text {
-    font-size: 18px;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 25px;
-    line-height: 1.6;
-    max-width: 650px;
-}
-
-.event-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-bottom: 30px;
-    padding: 15px 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.meta-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-}
-
-.meta-value {
-    font-size: 15px;
-    color: #fff;
-    font-weight: 500;
-}
+.album-link:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
 /* =========================================
-   PÁGINA DE INSCRIÇÃO
+   4. PÁGINA DE INSCRIÇÃO
 ========================================= */
 .registration-wrapper {
     display: flex; justify-content: center; align-items: center; padding: 100px 20px 120px; min-height: 85vh;
@@ -157,3 +181,42 @@
 .reg-header h1 { font-size: 38px; color: var(--accent); margin-bottom: 12px; }
 .reg-header .text { color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.6; max-width: 450px; margin: 0 auto; }
 .reg-form-area { padding: 30px 40px 50px; background: rgba(255,255,255,0.01); }
+
+/* =========================================
+   5. PAINEL ADMIN (Limpeza)
+========================================= */
+.admin-section { padding: 150px 20px 50px; max-width: 1200px; margin: 0 auto; min-height: 70vh; }
+.admin-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+.admin-header h1 { margin: 10px 0 0; font-size: 36px; }
+.admin-header .text { margin: 5px 0 0; }
+.admin-actions { display: flex; gap: 10px; }
+.btn-export { background-color: #107c41; color: white; border: none; padding: 12px 20px; }
+.btn-export:hover { filter: brightness(1.1); }
+.admin-table-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
+.admin-table th { padding: 15px 20px; color: var(--accent); font-size: 14px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border); }
+.admin-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.link-whatsapp { color: #25D366; text-decoration: none; font-weight: bold; }
+.btn-delete { background: #ff4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s; }
+.btn-delete:hover { filter: brightness(0.8); }
+.empty-table-msg { padding: 30px; text-align: center; color: var(--muted); }
+
+/* =========================================
+   6. EVENTOS (Listagem Otimizada)
+========================================= */
+.eventos-hero { text-align: center; margin-top: 40px; }
+.search-form { display: flex; gap: 10px; max-width: 600px; margin: 0 auto 30px; }
+.search-input:focus { outline: 1px solid var(--accent); }
+.btn-search { padding: 12px 24px; }
+.eventos-grid-section { padding: 40px 20px; }
+.empty-state { text-align: center; padding: 80px 20px; }
+
+/* =========================================
+   7. GALERIA (Página Limpa)
+========================================= */
+.galeria-section { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+.galeria-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 30px;
+    text-align: center; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s;
+}
+.galeria-card:hover { border-color: var(--accent); transform: translateY(-5px); }
