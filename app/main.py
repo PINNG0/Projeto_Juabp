@@ -14,7 +14,7 @@ from flask import (
 )
 
 from database import db
-from models import Inscricao
+from models import Inscricao, Usuario
 from data.eventos import eventos
 
 # =========================================
@@ -26,7 +26,15 @@ app = Flask(
     static_folder='../static'
 )
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///juabp.db'
+# CORREÇÃO: Definindo os caminhos absolutos e criando a pasta 'instance'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+INSTANCE_DIR = os.path.join(BASE_DIR, "instance")
+
+# Garante que a pasta 'instance' exista dentro de 'app' para o SQLite não quebrar
+if not os.path.exists(INSTANCE_DIR):
+    os.makedirs(INSTANCE_DIR)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(INSTANCE_DIR, "juabp.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('SECRET_KEY', 'chave_secreta_super_segura_aqui')
 
@@ -34,21 +42,7 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
-from datetime import datetime
 
-@app.before_request
-def registrar_acesso():
-    ip = request.headers.get(
-        'X-Forwarded-For',
-        request.remote_addr
-    )
-
-    print(
-        f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] "
-        f"IP={ip} "
-        f"METODO={request.method} "
-        f"ROTA={request.path}"
-    )
 # =========================================
 # OTIMIZAÇÃO O(1): CACHE DE MEMÓRIA
 # =========================================
@@ -87,7 +81,7 @@ def eventos_page():
         lista = [e for e in lista if busca in e.get('nome', '').lower() or busca in e.get('descricao', '').lower()]
 
     lista = sorted(lista, key=lambda x: x.get('nome', ''))
-    return render_template('eventos.html', eventos=lista, categorias=obter_categorias(), categoria_ativa=categoria, busca_ativa=busca)
+    return render_template('eventos.html', eventos=lista, categories=obter_categorias(), categoria_ativa=categoria, busca_ativa=busca)
 
 @app.route('/evento/<slug>')
 def evento_detalhe(slug):
@@ -107,18 +101,16 @@ def evento_detalhe(slug):
     return render_template('evento_detalhe.html', evento=evento, edicoes=edicoes, anos=anos, ano_ativo=ano, relacionados=relacionados)
 
 # =========================================
-# FORMULÁRIO BLINDADO (ANTI-SPAM)
+# FORMULÁRIO DE INSCRIÇÃO (COLETANDO IP)
 # =========================================
 @app.route('/inscricao', methods=['GET', 'POST'])
 def inscricao():
     evento_origem = request.args.get('evento', '').strip()
 
-    # Gera um Token de Segurança Único para a sessão se não existir
     if 'csrf_token' not in session:
         session['csrf_token'] = secrets.token_hex(16)
 
     if request.method == 'POST':
-        # Bloqueio Anti-Robô: Verifica se o token enviado bate com o da sessão
         token_enviado = request.form.get('csrf_token')
         if not token_enviado or token_enviado != session.get('csrf_token'):
             return render_template('inscricao.html', erro='Sessão expirada ou inválida. Por favor, tente novamente.', evento_origem=evento_origem)
@@ -127,12 +119,21 @@ def inscricao():
         telefone = request.form.get('telefone', '').strip()
         cidade = request.form.get('cidade', '').strip()
         mensagem = request.form.get('mensagem', '').strip()
+        
+        ip_cliente = request.headers.get('X-Forwarded-For', request.remote_addr)
 
         if not nome or not telefone or not cidade:
             return render_template('inscricao.html', erro='Preencha todos os campos obrigatórios.', evento_origem=evento_origem)
 
         try:
-            nova_inscricao = Inscricao(nome=nome, telefone=telefone, cidade=cidade, mensagem=mensagem)
+            nova_inscricao = Inscricao(
+                nome=nome, 
+                telefone=telefone, 
+                cidade=cidade, 
+                mensagem=mensagem,
+                ip_origem=ip_cliente,
+                termo_aceite=True
+            )
             db.session.add(nova_inscricao)
             db.session.commit()
             flash(f'Inscrição de {nome} realizada com sucesso!')
@@ -148,17 +149,30 @@ def inscricao():
     return render_template('inscricao.html', evento_origem=evento_origem)
 
 # =========================================
-# SISTEMA ADMIN
+# SISTEMA ADMIN (INTEGRADO COM BANCO DE DADOS)
 # =========================================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'csrf_token' not in session:
+        session['csrf_token'] = secrets.token_hex(16)
+
     if request.method == 'POST':
+        token_enviado = request.form.get('csrf_token')
+        if not token_enviado or token_enviado != session.get('csrf_token'):
+            return render_template('login.html', erro='Sessão expirada ou inválida. Por favor, tente novamente.')
+
         senha = request.form.get('senha')
-        if senha == '@Tsunami2026': 
+        
+        # Busca o administrador criado no banco de dados
+        admin_user = Usuario.query.filter_by(username='diretoria').first()
+        
+        # Valida a senha usando a criptografia Hash do model
+        if admin_user and admin_user.check_password(senha):
             session['logado'] = True
             return redirect(url_for('admin'))
         else:
             return render_template('login.html', erro='Senha incorreta. Acesso negado.')
+            
     return render_template('login.html')
 
 @app.route('/logout')

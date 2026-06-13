@@ -3,10 +3,10 @@
 {% block title %}Login da Diretoria - JUABP{% endblock %}
 
 {% block content %}
-<div class="registration-wrapper" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
-    <div class="registration-card-single" style="max-width: 400px; width: 100%;">
+<div class="registration-wrapper login-wrapper">
+    <div class="registration-card-single login-card">
         
-        <div class="reg-header" style="text-align: center;">
+        <div class="reg-header">
             <span class="tag">RESTRITO</span>
             <h1>Acesso Diretoria</h1>
             <p class="text">Insira a senha de acesso para visualizar o painel de inscrições da JUABP.</p>
@@ -14,12 +14,15 @@
 
         <div class="reg-form-area">
             {% if erro %}
-                <div class="error-box" style="margin-bottom: 20px;">
+                <div class="error-box">
                     <p>❌ {{ erro }}</p>
                 </div>
             {% endif %}
 
             <form method="POST" class="custom-form">
+                
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
                 <div class="input-group">
                     <label for="senha">Senha de Acesso</label>
                     <input type="password" id="senha" name="senha" placeholder="Digite a senha" required>

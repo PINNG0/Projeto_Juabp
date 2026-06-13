@@ -15,7 +15,9 @@
 .hero-title {
     font-size: clamp(4.5rem, 12vw, 9rem); font-weight: 900; line-height: 0.85; margin: 0;
     background: linear-gradient(180deg, #FFFFFF 0%, #a8a8a8 50%, #555555 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text; /* <-- Adicionamos o padrão aqui para sumir o aviso */
+    -webkit-text-fill-color: transparent;
     text-transform: uppercase; letter-spacing: -2px; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5));
 }
 .hero-subtitle {
