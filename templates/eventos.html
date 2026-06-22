@@ -45,11 +45,13 @@
         <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="event-box">
             
             <div class="about-image">
-                <img src="{{ url_for('static', filename='img/' + e.banner) }}" alt="{{ e.nome }}" loading="lazy" decoding="async">
+                <!-- Lógica inteligente para URL externa ou local -->
+                {% set banner_url = e.banner if e.banner.startswith('http') else url_for('static', filename='img/' + e.banner) %}
+                <img src="{{ banner_url }}" alt="{{ e.nome }}" loading="lazy" decoding="async">
             </div>
             
             <div class="event-content">
-                <span class="tag" style="font-size: 10px; margin-bottom: 10px;">{{ e.categoria|capitalize }}</span>
+                <!-- TAG REMOVIDA PARA LIMPAR O DESIGN -->
                 <h3>{{ e.nome }}</h3>
                 <p class="text" style="font-size: 13px;">{{ e.descricao }}</p>
             </div>

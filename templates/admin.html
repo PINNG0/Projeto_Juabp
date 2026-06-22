@@ -8,53 +8,124 @@
     <div class="admin-header">
         <div>
             <span class="tag">ÁREA RESTRITA</span>
-            <h1>Inscrições 2026</h1>
-            <p class="text">Total: <strong>{{ inscritos|length }}</strong> inscritos</p>
+            <h1>Painel de Controle</h1>
+            <p class="text">Gerencie as inscrições e o conteúdo do site oficial da JUABP.</p>
         </div>
         <div class="admin-actions">
-            <a href="/admin/exportar" class="btn btn-export">📥 Exportar Planilha</a>
             <a href="/logout" class="btn-outline">Sair do Painel</a>
         </div>
     </div>
 
-    <div class="admin-table-container">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>WhatsApp</th>
-                    <th>Cidade</th>
-                    <th>Mensagem / Experiência</th>
-                    <th style="text-align: center;">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for pessoa in inscritos %}
-                <tr>
-                    <td style="color: var(--muted);">#{{ pessoa.id }}</td>
-                    <td style="font-weight: bold;">{{ pessoa.nome }}</td>
-                    <td>
-                        <a href="https://wa.me/55{{ pessoa.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}" target="_blank" rel="noopener noreferrer" class="link-whatsapp">
-                            {{ pessoa.telefone }}
-                        </a>
-                    </td>
-                    <td style="color: var(--muted);">{{ pessoa.cidade }}</td>
-                    <td style="font-size: 14px; color: var(--muted);">{{ pessoa.mensagem or '---' }}</td>
-                    <td style="text-align: center;">
-                        <form action="/admin/deletar/{{ pessoa.id }}" method="POST" onsubmit="return confirm('Atenção: Tem certeza que deseja apagar a inscrição de {{ pessoa.nome }}?');" style="margin: 0;">
-                            <button type="submit" class="btn-delete">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="empty-table-msg">Nenhuma inscrição recebida ainda.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="admin-tabs">
+        <button class="tab-btn active" onclick="abrirAba('inscricoes')">📝 Inscrições</button>
+        <button class="tab-btn" onclick="abrirAba('eventos')">📅 Eventos e Galerias</button>
+    </div>
+
+    <div id="aba-inscricoes" class="tab-content active">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: #fff; font-size: 24px;">Inscrições 2026</h2>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <span style="color: var(--muted);">Total: <strong>{{ inscritos|length }}</strong></span>
+                <a href="/admin/exportar" class="btn-export" style="text-decoration: none; border-radius: 6px;">📥 Exportar Planilha</a>
+            </div>
+        </div>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>WhatsApp</th>
+                        <th>Cidade</th>
+                        <th>Mensagem</th>
+                        <th style="text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pessoa in inscritos %}
+                    <tr>
+                        <td style="color: var(--muted);">#{{ pessoa.id }}</td>
+                        <td style="font-weight: bold;">{{ pessoa.nome }}</td>
+                        <td>
+                            <a href="https://wa.me/55{{ pessoa.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}" target="_blank" rel="noopener noreferrer" class="link-whatsapp">
+                                {{ pessoa.telefone }}
+                            </a>
+                        </td>
+                        <td style="color: var(--muted);">{{ pessoa.cidade }}</td>
+                        <td style="font-size: 14px; color: var(--muted);">{{ pessoa.mensagem or '---' }}</td>
+                        <td style="text-align: center;">
+                            <form action="/admin/deletar/{{ pessoa.id }}" method="POST" onsubmit="return confirm('Apagar a inscrição de {{ pessoa.nome }}?');" style="margin: 0;">
+                                <button type="submit" class="btn-delete">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="empty-table-msg">Nenhuma inscrição recebida ainda.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="aba-eventos" class="tab-content" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: #fff; font-size: 24px;">Gerenciar Eventos</h2>
+            <a href="/admin/evento/novo" class="btn btn-full" style="padding: 10px 20px; font-size: 14px;">➕ Criar Novo Evento</a>
+        </div>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome do Evento</th>
+                        <th>Categoria</th>
+                        <th>Edições/Anos</th>
+                        <th style="text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evento in eventos_admin %}
+                    <tr>
+                        <td style="color: var(--muted);">#{{ evento.id }}</td>
+                        <td style="font-weight: bold; color: var(--accent);">{{ evento.nome }}</td>
+                        <td style="color: var(--muted);">{{ evento.categoria }}</td>
+                        <td style="color: var(--muted);">{{ evento.edicoes|length }} edições cadastradas</td>
+                        <td style="text-align: center; display: flex; justify-content: center; gap: 10px;">
+                            <a href="/admin/evento/editar/{{ evento.id }}" class="btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">✏️ Editar</a>
+                            <form action="/admin/evento/deletar/{{ evento.id }}" method="POST" onsubmit="return confirm('ATENÇÃO: Apagar este evento também apagará TODAS as edições e fotos dele. Confirmar?');" style="margin: 0;">
+                                <button type="submit" class="btn-delete">🗑️ Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="empty-table-msg">Nenhum evento cadastrado no banco de dados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Script simples para alternar entre as abas do painel
+    function abrirAba(nomeAba) {
+        // Esconde todos os conteúdos
+        document.querySelectorAll('.tab-content').forEach(aba => aba.style.display = 'none');
+        // Tira o destaque de todos os botões
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        // Mostra a aba clicada e destaca o botão
+        document.getElementById('aba-' + nomeAba).style.display = 'block';
+        event.currentTarget.classList.add('active');
+    }
+</script>
 {% endblock %}

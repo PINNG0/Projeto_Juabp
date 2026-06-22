@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Criar Evento - JUABP{% endblock %}
+
+{% block content %}
+<div class="registration-wrapper" style="min-height: 80vh; padding: 120px 20px 80px; display: block; background: #0a0a0a;">
+    <div style="max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="/admin" style="color: var(--muted); text-decoration: none; font-size: 15px;">&larr; Voltar para o Painel</a>
+        <h1 style="color: var(--accent); font-size: 28px; margin: 0;">Novo Evento / Matéria</h1>
+    </div>
+
+    <div class="registration-card-single" style="max-width: 900px; width: 100%; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 40px;">
+        <form method="POST" class="custom-form" enctype="multipart/form-data">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div class="input-group">
+                    <label for="nome">Título do Evento *</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Arraial Flor do Maracujá" required>
+                </div>
+                <div class="input-group">
+                    <label for="categoria">Categoria *</label>
+                    <select id="categoria" name="categoria" required style="width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 16px;">
+                        <option value="Concurso">Concurso</option>
+                        <option value="Apresentação">Apresentação</option>
+                        <option value="Premiação">Premiação</option>
+                        <option value="Geral" selected>Geral</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
+                <label style="color: var(--accent); font-weight: bold; margin-bottom: 10px; display: block;">1. Banner Principal de Capa</label>
+                <input type="file" name="banner_file" accept="image/*" style="padding: 10px; width: 100%; margin-bottom: 10px; color: #fff;">
+                <input type="text" name="banner_url" placeholder="OU cole um Link (URL) externo da imagem">
+            </div>
+
+            <div class="input-group">
+                <label for="introducao">Parágrafo Inicial / Introdução</label>
+                <textarea id="introducao" name="introducao" rows="4" placeholder="Escreva a primeira parte da história aqui..."></textarea>
+            </div>
+
+            <div class="input-group" style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; margin-top: 25px;">
+                <label style="color: var(--accent); font-weight: bold; margin-bottom: 10px; display: block;">2. Imagem Adicional (Corpo da Matéria)</label>
+                <input type="file" name="corpo_file" accept="image/*" style="padding: 10px; width: 100%; margin-bottom: 15px; color: #fff;">
+                <input type="text" name="corpo_url" placeholder="OU cole um Link (URL) externo para a foto do corpo" style="margin-bottom: 15px;">
+                
+                <label for="alinhamento">Alinhamento da Imagem no Texto</label>
+                <select id="alinhamento" name="alinhamento" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border); border-radius: 6px; color: #fff;">
+                    <option value="centro" selected>Centralizada (Texto abaixo da imagem)</option>
+                    <option value="esquerda">Esquerda (Texto envolve a imagem pela direita)</option>
+                    <option value="direita">Direita (Texto envolve a imagem pela esquerda)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="texto_secundario">Parágrafo de Continuação / Conclusão</label>
+                <textarea id="texto_secundario" name="texto_secundario" rows="5" placeholder="Escreva o restante do texto ou considerações finais..."></textarea>
+            </div>
+
+            <div style="margin-top: 40px; text-align: right;">
+                <button type="submit" class="btn btn-full" style="padding: 15px 45px; font-size: 16px;">Publicar Matéria</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

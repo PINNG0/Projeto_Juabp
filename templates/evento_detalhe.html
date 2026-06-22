@@ -6,94 +6,138 @@
 
 {% block content %}
 
-{% set bg_imagem = url_for('static', filename='img/' + evento.banner) %}
-<div class="event-hero" style="background-image: url('{{ bg_imagem }}');">
-    <div class="event-hero-content">
-        <span class="tag">{{ evento.categoria|upper }}</span>
-        
-        <h1>{{ evento.nome }}</h1>
-        
-        <p class="text">{{ evento.descricao }}</p>
+<!-- ==========================================
+     CAIXA MESTRA DA MATÉRIA (Largura de Leitura)
+     ========================================== -->
+<div style="max-width: 900px; margin: 60px auto 80px; padding: 0 20px;">
 
-        <div class="event-meta">
-            <div class="meta-item">
-                <span class="meta-label">Último Registro</span>
-                <span class="meta-value">{{ evento.edicoes[0].ano if evento.edicoes else '---' }}</span>
+    <!-- 1. CABEÇALHO DA MATÉRIA (Puro texto, leitura 100% perfeita) -->
+    <div style="text-align: left; margin-bottom: 30px;">
+        <span style="display: inline-block; padding: 6px 14px; background: rgba(255,215,0,0.1); color: var(--accent); border: 1px solid rgba(255,215,0,0.2); border-radius: 6px; font-size: 12px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px;">
+            {{ evento.categoria|upper }}
+        </span>
+        
+        <h1 style="color: #fff; font-size: clamp(32px, 5vw, 52px); margin: 0 0 25px; line-height: 1.15; font-weight: 900;">
+            {{ evento.nome }}
+        </h1>
+
+        <!-- Barrinha de Informações -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 14px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 0;">
+            <span><strong style="color: #fff;">Último Registro:</strong> {{ evento.edicoes[0].ano if evento.edicoes else '---' }}</span>
+            <span><strong style="color: #fff;">Total de Edições:</strong> {{ evento.edicoes|length }}</span>
+        </div>
+    </div>
+
+    <!-- 2. FOTO PRINCIPAL DE CAPA (Sem texto em cima, não deforma) -->
+    {% set bg_imagem = evento.banner if evento.banner.startswith('http') else url_for('static', filename='img/' + evento.banner) %}
+    <div style="margin-bottom: 40px; width: 100%;">
+        <img src="{{ bg_imagem }}" alt="{{ evento.nome }}" style="width: 100%; max-height: 550px; object-fit: cover; object-position: center top; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+    </div>
+
+    <!-- 3. CORPO DA MATÉRIA (Texto legível e ajustado) -->
+    {% if evento.introducao or evento.imagem_corpo or evento.texto_secundario %}
+    <div style="font-size: 18px; line-height: 1.8; color: rgba(255,255,255,0.85); text-align: left; margin-bottom: 80px;">
+        
+        {% if evento.introducao %}
+        <p style="margin-bottom: 30px;">{{ evento.introducao }}</p>
+        {% endif %}
+
+        {% if evento.imagem_corpo %}
+            {% set img_corpo_url = evento.imagem_corpo if evento.imagem_corpo.startswith('http') else url_for('static', filename='img/' + evento.imagem_corpo) %}
+            
+            {% if evento.alinhamento == 'esquerda' %}
+                <img src="{{ img_corpo_url }}" alt="Imagem do Evento" style="float: left; width: 50%; max-width: 400px; border-radius: 12px; margin: 10px 30px 20px 0; border: 1px solid rgba(255,255,255,0.05);">
+            {% elif evento.alinhamento == 'direita' %}
+                <img src="{{ img_corpo_url }}" alt="Imagem do Evento" style="float: right; width: 50%; max-width: 400px; border-radius: 12px; margin: 10px 0 20px 30px; border: 1px solid rgba(255,255,255,0.05);">
+            {% else %}
+                <div style="margin: 40px 0; text-align: center;">
+                    <img src="{{ img_corpo_url }}" alt="Imagem do Evento" style="width: 100%; max-height: 500px; object-fit: cover; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if evento.texto_secundario %}
+            <p style="margin-top: 20px;">{{ evento.texto_secundario }}</p>
+        {% endif %}
+
+        <!-- Proteção para que o texto não desalinhe -->
+        <div style="clear: both;"></div>
+    </div>
+    {% endif %}
+
+    <!-- 4. EDIÇÕES E REGISTROS -->
+    <div style="margin-top: 60px;">
+        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 40px;">
+            <h2 style="margin: 0; font-size: 26px; color: #fff;">Edições Oficiais</h2>
+            <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            {% for edicao in edicoes %}
+            <!-- Cartão unificado -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; align-items: stretch;">
+                
+                <div style="min-height: 250px;">
+                    {% set img_edicao = edicao.imagem_capa if edicao.imagem_capa.startswith('http') else url_for('static', filename='img/' + edicao.imagem_capa) %}
+                    <img src="{{ img_edicao }}" alt="{{ edicao.tema }}" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                </div>
+
+                <div style="padding: 40px;">
+                    <span style="display: inline-block; padding: 6px 12px; background: rgba(255,215,0,0.1); color: var(--accent); border: 1px solid rgba(255,215,0,0.2); border-radius: 6px; font-size: 11px; font-weight: bold; margin-bottom: 15px;">ANO {{ edicao.ano }}</span>
+                    <h3 style="font-size: 24px; margin: 0 0 10px; color: #fff;">{{ edicao.tema }}</h3>
+                    <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">📍 Local: {{ edicao.local }}</p>
+                    <p style="font-size: 16px; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 25px;">{{ edicao.descricao }}</p>
+
+                    {% if edicao.links %}
+                    <div>
+                        <h4 style="font-size: 11px; margin-bottom: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">Álbuns Oficiais</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            {% for link in edicao.links %}
+                            <a href="{{ link.url }}" target="_blank" style="padding: 8px 12px; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; border-radius: 6px; font-size: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">🔗 {{ link.nome }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            <div class="meta-item">
-                <span class="meta-label">Total de Edições</span>
-                <span class="meta-value">{{ evento.edicoes|length }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Anos Ativos</span>
-                <span class="meta-value">{{ anos|length }}</span>
-            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 60px; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+            <h3 style="margin-bottom: 20px; font-size: 20px; color: #fff;">Faça parte da nossa próxima grande conquista</h3>
+            <a href="/inscricao?evento={{ evento.nome }}" style="display: inline-block; padding: 15px 35px; background: var(--accent); color: #000; text-decoration: none; font-weight: bold; font-size: 15px; border-radius: 8px; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                GARANTIR MINHA INSCRIÇÃO
+            </a>
         </div>
     </div>
 </div>
 
-<section class="edicoes-container">
-    <span class="tag">TRAJETÓRIA</span>
-    <h2 style="margin-top: 10px;">Edições e Registros Oficiais</h2>
-    <p class="text">Confira o histórico de temas, locais e registros visuais desta categoria.</p>
-
-    <div class="edicoes-list">
-        {% for edicao in edicoes %}
-        <div class="edicao-card">
-            
-            <div class="edicao-img-wrapper">
-                <img src="{{ url_for('static', filename='img/' + edicao.imagem) }}" alt="{{ edicao.tema }}">
-            </div>
-
-            <div>
-                <span class="tag" style="background: rgba(255,255,255,0.05); color: var(--accent);">ANO {{ edicao.ano }}</span>
-                <h3 style="font-size: 24px; margin: 15px 0 10px;">{{ edicao.tema }}</h3>
-                <p class="text" style="font-size: 14px; color: var(--muted); margin-bottom: 15px;">📍 Local: {{ edicao.local }}</p>
-                <p class="text" style="margin-bottom: 25px;">{{ edicao.descricao }}</p>
-
-                {% if edicao.galerias_externas %}
-                <div>
-                    <h4 style="font-size: 14px; margin-bottom: 10px; color: var(--accent);">Álbuns e Matérias Oficiais:</h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        {% for link in edicao.galerias_externas %}
-                        <a href="{{ link.url }}" target="_blank" class="album-link">
-                            {{ link.nome }}
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-
-        </div>
-        {% endfor %}
-    </div>
-
-    <div style="text-align: center; margin-top: 60px; padding: 40px; border-top: 1px solid var(--border);">
-        <h3 style="margin-bottom: 15px;">Quer fazer parte da nossa próxima grande conquista?</h3>
-        <a href="/inscricao?evento={{ evento.nome }}" class="btn" style="display: inline-block;">
-            GARANTIR MINHA INSCRIÇÃO
-        </a>
-    </div>
-</section>
-
+<!-- ==========================================
+     OUTROS EVENTOS
+     ========================================== -->
 {% if relacionados %}
-<section style="background:transparent; border:none; padding: 0 20px 80px; max-width: 1200px; margin: 0 auto;">
-    <h2>Outros Eventos</h2>
-    <p class="text" style="margin-top: 5px;">Continue explorando a história da JUABP.</p>
+<div style="max-width: 1000px; margin: 0 auto 80px; padding: 0 20px;">
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+        <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+        <h2 style="margin: 0; font-size: 18px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Continue Explorando</h2>
+        <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+    </div>
     
-    <div class="event-grid" style="margin-top:25px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
         {% for rel in relacionados %}
-        <a href="/evento/{{ rel.slug }}" class="event-box">
-            <div class="about-image">
-                <img src="{{ url_for('static', filename='img/' + rel.banner) }}" alt="{{ rel.nome }}">
+        <a href="/evento/{{ rel.slug }}" style="display: block; border-radius: 12px; overflow: hidden; background: #111; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--accent)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.05)'">
+            <div style="height: 180px;">
+                {% set rel_img = rel.banner if rel.banner.startswith('http') else url_for('static', filename='img/' + rel.banner) %}
+                <img src="{{ rel_img }}" alt="{{ rel.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
-            <span class="tag">{{ rel.categoria|upper }}</span>
-            <h3>{{ rel.nome }}</h3>
+            <div style="padding: 20px;">
+                <h3 style="font-size: 16px; margin: 0 0 8px; color: #fff;">{{ rel.nome }}</h3>
+                <p style="font-size: 11px; color: var(--accent); margin: 0; font-weight: bold; letter-spacing: 1px;">{{ rel.categoria|upper }}</p>
+            </div>
         </a>
         {% endfor %}
     </div>
-</section>
+</div>
 {% endif %}
 
 {% endblock %}
