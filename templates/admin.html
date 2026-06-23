@@ -94,8 +94,12 @@
                         <td style="font-weight: bold; color: var(--accent);">{{ evento.nome }}</td>
                         <td style="color: var(--muted);">{{ evento.categoria }}</td>
                         <td style="color: var(--muted);">{{ evento.edicoes|length }} edições cadastradas</td>
-                        <td style="text-align: center; display: flex; justify-content: center; gap: 10px;">
+                        <td style="text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                            
+                            <a href="/admin/evento/{{ evento.id }}/edicoes" class="btn" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">📸 Edições</a>
+                            
                             <a href="/admin/evento/editar/{{ evento.id }}" class="btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">✏️ Editar</a>
+                            
                             <form action="/admin/evento/deletar/{{ evento.id }}" method="POST" onsubmit="return confirm('ATENÇÃO: Apagar este evento também apagará TODAS as edições e fotos dele. Confirmar?');" style="margin: 0;">
                                 <button type="submit" class="btn-delete">🗑️ Excluir</button>
                             </form>

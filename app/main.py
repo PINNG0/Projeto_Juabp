@@ -391,7 +391,6 @@ def admin_evento_editar(id):
         print(f"Erro ao atualizar: {e}")
         flash("Erro crítico ao atualizar o evento.", "error")
 
-    # Mapeia os dados estruturados para preencher os campos do formulário de edição
     evento_mapeado = evento_para_dict(evento)
     return render_template('admin_evento_editar.html', evento=evento_mapeado)
 
@@ -410,6 +409,88 @@ def admin_evento_deletar(id):
         print(f"Erro ao deletar: {e}")
         flash("Erro ao tentar excluir o evento.", "error")
     return redirect(url_for('admin'))
+
+# =========================================
+# SISTEMA ADMIN: CMS DE EDIÇÕES E GALERIAS
+# =========================================
+@app.route('/admin/evento/<int:evento_id>/edicoes')
+def admin_edicoes(evento_id):
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+    evento = Evento.query.get_or_404(evento_id)
+    edicoes = Edicao.query.filter_by(evento_id=evento.id).order_by(Edicao.ano.desc()).all()
+    return render_template('admin_edicoes.html', evento=evento, edicoes=edicoes)
+
+@app.route('/admin/evento/<int:evento_id>/edicao/nova', methods=['GET', 'POST'])
+def admin_edicao_nova(evento_id):
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+    evento = Evento.query.get_or_404(evento_id)
+
+    if request.method == 'POST':
+        ano = request.form.get('ano', type=int)
+        tema = request.form.get('tema').strip()
+        local = request.form.get('local').strip()
+        descricao = request.form.get('descricao').strip()
+
+        capa_file = request.files.get('capa_file')
+        capa_url = request.form.get('capa_url').strip()
+        
+        nome_capa = 'campea.jpeg'
+        if capa_file and capa_file.filename:
+            filename = secure_filename(capa_file.filename)
+            capa_file.save(os.path.join(app.static_folder, 'img', filename))
+            nome_capa = filename
+        elif capa_url:
+            nome_capa = capa_url
+
+        try:
+            nova_edicao = Edicao(
+                evento_id=evento.id,
+                ano=ano,
+                tema=tema,
+                local=local,
+                descricao=descricao,
+                imagem_capa=nome_capa
+            )
+            db.session.add(nova_edicao)
+            db.session.flush()
+
+            link_nomes = request.form.getlist('link_nome[]')
+            link_urls = request.form.getlist('link_url[]')
+            
+            for nome_link, url_link in zip(link_nomes, link_urls):
+                if nome_link.strip() and url_link.strip():
+                    novo_link = GaleriaLink(edicao_id=nova_edicao.id, nome=nome_link.strip(), url=url_link.strip())
+                    db.session.add(novo_link)
+
+            db.session.commit()
+            flash(f"Sucesso: A edição de {ano} foi adicionada ao evento!", "success")
+            return redirect(url_for('admin_edicoes', evento_id=evento.id))
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Erro ao salvar edição: {e}")
+            flash("Erro ao salvar a edição. Verifique os dados.", "error")
+
+    return render_template('admin_edicao_form.html', evento=evento)
+
+@app.route('/admin/edicao/deletar/<int:id>', methods=['POST'])
+def admin_edicao_deletar(id):
+    if not session.get('logado'):
+        return redirect(url_for('login'))
+    edicao = Edicao.query.get_or_404(id)
+    evento_id = edicao.evento_id
+    try:
+        GaleriaLink.query.filter_by(edicao_id=edicao.id).delete()
+        db.session.delete(edicao)
+        db.session.commit()
+        flash(f"Edição excluída com sucesso.", "success")
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao deletar edição: {e}")
+        flash("Erro ao excluir a edição.", "error")
+    return redirect(url_for('admin_edicoes', evento_id=evento_id))
 
 # =========================================
 # ERROS

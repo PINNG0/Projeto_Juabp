@@ -1,83 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- O Fundo Escuro Contínuo -->
+<div style="background: radial-gradient(circle at 50% 0%, rgba(60, 25, 10, 0.4) 0%, rgba(10,10,10,1) 50%); min-height: 100vh;">
 
-<div class="hero-wrapper">
-    <div class="home-hero">
-        <div style="flex: 1.2; min-width: 300px;">
+    <!-- 1. HERO SECTION (Compacto, unido e responsivo) -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px 20px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+
+        <!-- Textos e Botões -->
+        <div style="flex: 1 1 450px; padding: 20px 0; z-index: 2;">
+            
             <div class="fade-up delay-1">
-                <span class="tag" style="background: rgba(255, 215, 0, 0.1); color: #FFD700; border: 1px solid #FFD700; margin-bottom: 20px; padding: 8px 16px;">TEMPORADA 2026</span>
+                <span style="display: inline-block; background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-bottom: 15px; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 11px; letter-spacing: 2px;">TEMPORADA 2026</span>
             </div>
             
-            <h1 class="hero-title fade-up delay-1">JUABP</h1>
-            <h2 class="hero-subtitle fade-up delay-2">Tsunami do Norte</h2>
+            <h1 class="hero-title fade-up delay-1" style="font-size: clamp(3.5rem, 6vw, 5.5rem); margin: 0; line-height: 0.95; color: #fff; font-weight: 900; text-shadow: 0 4px 15px rgba(0,0,0,0.5);">JUABP</h1>
+            <h2 class="hero-subtitle fade-up delay-2" style="color: var(--accent); font-size: clamp(1.5rem, 3vw, 2.2rem); margin: 5px 0 15px; font-weight: 300; letter-spacing: 1px;">TSUNAMI DO NORTE</h2>
             
-            <p class="text fade-up delay-3" style="font-size: 1.25rem; line-height: 1.7; margin-bottom: 45px; max-width: 550px; color: #ccc;">
+            <p class="text fade-up delay-3" style="font-size: 1.15rem; line-height: 1.5; margin: 0 0 30px; max-width: 480px; color: rgba(255,255,255,0.85);">
                 Um espetáculo de força, identidade e tradição. A arena vai tremer com a nossa narrativa épica inspirada em <strong style="color: #fff;">Jorge, o guerreiro</strong>.
             </p>
 
-            <div class="fade-up delay-4" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <a href="/sobre" class="btn btn-pulsante" style="padding: 18px 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase;">Conhecer a História</a>
-                <a href="/eventos" class="btn-outline" style="padding: 18px 40px; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.3); color: #fff;">Ver Eventos</a>
+            <div class="fade-up delay-4" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="/sobre" class="btn btn-pulsante" style="padding: 14px 30px; font-size: 1rem; font-weight: bold; text-transform: uppercase; background: var(--accent); color: #000; border-radius: 8px;">Conhecer a História</a>
+                <a href="/eventos" style="padding: 14px 30px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.2); color: #fff; text-decoration: none; border-radius: 8px; transition: 0.3s; background: rgba(255,255,255,0.03);" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">Ver Eventos</a>
             </div>
         </div>
 
-        <div class="camisa-container fade-up delay-3">
-            <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Camisa Tema 2026" class="camisa-flutuante">
+        <!-- Camisa -->
+        <div class="camisa-container fade-up delay-3" style="flex: 1 1 350px; display: flex; justify-content: center; align-items: flex-end; position: relative; z-index: 2;">
+            <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Camisa Tema 2026" style="width: auto; max-height: 480px; object-fit: contain; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.8));" class="camisa-flutuante">
         </div>
     </div>
-    
-    <div class="scroll-indicator">
-        <span>A Essência</span>
-        <div class="scroll-arrow">↓</div>
-    </div>
-</div>
 
-<section style="padding: 100px 20px 60px; max-width: 1300px; margin: 0 auto;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 15px;">
-        <div>
-            <span class="tag" style="margin-bottom: 12px; background: rgba(255,255,255,0.05);">MEMÓRIAS DE OURO</span>
-            <h2 style="font-size: 2.8rem; margin: 0; font-weight: 800; letter-spacing: -1px;">O Cenário de Vitórias</h2>
-        </div>
-        <a href="/eventos" style="color: var(--accent); text-decoration: none; font-size: 1.1rem; font-weight: bold; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">Ver todos os registos ➔</a>
+    <!-- Indicador de Rolagem -->
+    <div style="text-align: center; padding: 30px 0 50px; color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%;">
+        <span>Deslize para explorar</span>
+        <div style="margin-top: 8px; font-size: 16px;">↓</div>
     </div>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px;">
-        {% for e in eventos %}
-        <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" class="evento-card">
-            
-            <div class="evento-img-container">
-                <!-- Lógica inteligente para URL externa ou local -->
-                {% set banner_url = e.banner if e.banner.startswith('http') else url_for('static', filename='img/' + e.banner) %}
-                <img src="{{ banner_url }}" alt="{{ e.nome }}">
-                <!-- TAG REMOVIDA PARA LIMPAR A IMAGEM -->
+
+    <!-- 2. SECTION: EVENTOS (Completamente Despoluído) -->
+    <section style="padding: 40px 20px 80px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin: 0; font-weight: 800; color: #fff;">Trajetória e Apresentações</h2>
             </div>
-            
-            <div style="padding: 35px; display: flex; flex-direction: column; flex-grow: 1;">
-                <h3 style="margin: 0 0 15px; font-size: 1.6rem; font-weight: 700;">{{ e.nome }}</h3>
-                <p class="text" style="font-size: 1.05rem; color: #aaa; margin: 0 0 25px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1;">
-                    {{ e.descricao }}
-                </p>
-                <div style="font-size: 0.95rem; font-weight: bold; color: #fff;">
-                    Explorar Evento <span class="seta-animada">➔</span>
+            <a href="/eventos" style="color: var(--accent); text-decoration: none; font-size: 1rem; font-weight: bold; border-bottom: 1px solid transparent; padding-bottom: 3px; transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">Ver acervo completo ➔</a>
+        </div>
+        
+        <!-- Grid de Cartões -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            {% for e in eventos %}
+            <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" style="display: flex; flex-direction: column; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; text-decoration: none; transition: 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(255,215,0,0.3)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.boxShadow='none'">
+                
+                <div style="height: 220px; position: relative;">
+                    {% set banner_url = e.banner if e.banner.startswith('http') else url_for('static', filename='img/' + e.banner) %}
+                    <img src="{{ banner_url }}" alt="{{ e.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-            </div>
+                
+                <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="margin: 0 0 10px; font-size: 1.4rem; color: #fff; font-weight: 700;">{{ e.nome }}</h3>
+                    <p style="font-size: 1rem; color: rgba(255,255,255,0.6); margin: 0 0 20px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1;">
+                        {{ e.descricao }}
+                    </p>
+                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--accent);">
+                        Explorar Matéria ➔
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 3. SECTION: CTA FINAL UNIFICADO -->
+    <div style="padding: 40px 20px 80px; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto; background: rgba(255,215,0,0.03); border: 1px solid rgba(255,215,0,0.1); padding: 60px 30px; border-radius: 20px;">
             
-        </a>
-        {% endfor %}
+            <h2 style="font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 20px; color: #fff; line-height: 1.1; font-weight: 900;">Faça Parte do Nosso Elenco</h2>
+            
+            <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 35px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+                A arena espera por você. Junte-se à JUABP e viva a emoção inigualável de defender o nosso pavilhão na maior vitrine cultural de Rondônia.
+            </p>
+            
+            <a href="/inscricao" style="background: var(--accent); color: #000; padding: 18px 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; display: inline-block; text-decoration: none; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Garantir Minha Vaga</a>
+        </div>
     </div>
-</section>
 
-<div class="cta-gigante">
-    <div class="cta-bg"></div>
-    <div class="cta-content">
-        <span class="tag" style="background: rgba(220, 20, 60, 0.2); color: var(--accent); border: 1px solid var(--accent); margin-bottom: 20px; display: inline-block;">INSCRIÇÕES 2026</span>
-        <h2 style="font-size: clamp(2.2rem, 6vw, 4rem); margin-bottom: 25px; color: #fff; line-height: 1.1; font-weight: 900; text-transform: uppercase;">Sinta a Força do Tsunami</h2>
-        <p class="text" style="font-size: 1.25rem; color: #eee; margin-bottom: 45px; line-height: 1.6;">
-            A arena espera por si. Junte-se à JUABP e viva a emoção inigualável de defender o nosso pavilhão na maior vitrine cultural de Rondônia.
-        </p>
-        <a href="/inscricao" class="btn btn-pulsante" style="padding: 20px 50px; font-size: 1.3rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Garantir Minha Vaga</a>
-    </div>
 </div>
-
 {% endblock %}
