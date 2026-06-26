@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- O Fundo Escuro Contínuo -->
 <div style="background: radial-gradient(circle at 50% 0%, rgba(60, 25, 10, 0.4) 0%, rgba(10,10,10,1) 50%); min-height: 100vh;">
 
-    <!-- 1. HERO SECTION (Compacto, unido e responsivo) -->
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px 20px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
-
-        <!-- Textos e Botões -->
         <div style="flex: 1 1 450px; padding: 20px 0; z-index: 2;">
-            
             <div class="fade-up delay-1">
                 <span style="display: inline-block; background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-bottom: 15px; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 11px; letter-spacing: 2px;">TEMPORADA 2026</span>
             </div>
@@ -27,21 +22,17 @@
             </div>
         </div>
 
-        <!-- Camisa -->
         <div class="camisa-container fade-up delay-3" style="flex: 1 1 350px; display: flex; justify-content: center; align-items: flex-end; position: relative; z-index: 2;">
             <img src="{{ url_for('static', filename='img/camisa_tema.png') }}" alt="Camisa Tema 2026" style="width: auto; max-height: 480px; object-fit: contain; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.8));" class="camisa-flutuante">
         </div>
     </div>
 
-    <!-- Indicador de Rolagem -->
     <div style="text-align: center; padding: 30px 0 50px; color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%;">
         <span>Deslize para explorar</span>
         <div style="margin-top: 8px; font-size: 16px;">↓</div>
     </div>
 
-    <!-- 2. SECTION: EVENTOS (Completamente Despoluído) -->
     <section style="padding: 40px 20px 80px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;">
-        
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin: 0; font-weight: 800; color: #fff;">Trajetória e Apresentações</h2>
@@ -49,43 +40,45 @@
             <a href="/eventos" style="color: var(--accent); text-decoration: none; font-size: 1rem; font-weight: bold; border-bottom: 1px solid transparent; padding-bottom: 3px; transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">Ver acervo completo ➔</a>
         </div>
         
-        <!-- Grid de Cartões -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
             {% for e in eventos %}
             <a href="{{ url_for('evento_detalhe', slug=e.slug) }}" style="display: flex; flex-direction: column; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; text-decoration: none; transition: 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(255,215,0,0.3)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.boxShadow='none'">
-                
                 <div style="height: 220px; position: relative;">
                     {% set banner_url = e.banner if e.banner.startswith('http') else url_for('static', filename='img/' + e.banner) %}
                     <img src="{{ banner_url }}" alt="{{ e.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                
                 <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
                     <h3 style="margin: 0 0 10px; font-size: 1.4rem; color: #fff; font-weight: 700;">{{ e.nome }}</h3>
                     <p style="font-size: 1rem; color: rgba(255,255,255,0.6); margin: 0 0 20px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1;">
                         {{ e.descricao }}
                     </p>
-                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--accent);">
-                        Explorar Matéria ➔
-                    </div>
+                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--accent);">Explorar Matéria ➔</div>
                 </div>
             </a>
             {% endfor %}
         </div>
     </section>
 
-    <!-- 3. SECTION: CTA FINAL UNIFICADO -->
+    <section style="padding: 40px 20px 80px; max-width: 1200px; margin: 0 auto; color: #fff;">
+        <h2 style="font-size: 2rem; margin-bottom: 30px; font-weight: 800;">No Instagram</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            {% for post in posts %}
+            <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; background: rgba(255,255,255,0.02);">
+                <img src="{{ post.image }}" alt="Instagram" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #ccc;">{{ post.caption }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
     <div style="padding: 40px 20px 80px; text-align: center;">
         <div style="max-width: 800px; margin: 0 auto; background: rgba(255,215,0,0.03); border: 1px solid rgba(255,215,0,0.1); padding: 60px 30px; border-radius: 20px;">
-            
             <h2 style="font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 20px; color: #fff; line-height: 1.1; font-weight: 900;">Faça Parte do Nosso Elenco</h2>
-            
             <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 35px; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
                 A arena espera por você. Junte-se à JUABP e viva a emoção inigualável de defender o nosso pavilhão na maior vitrine cultural de Rondônia.
             </p>
-            
             <a href="/inscricao" style="background: var(--accent); color: #000; padding: 18px 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; display: inline-block; text-decoration: none; transition: 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Garantir Minha Vaga</a>
         </div>
     </div>
-
 </div>
 {% endblock %}
