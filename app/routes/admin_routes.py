@@ -13,11 +13,22 @@ admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.before_request
 def checar_login():
-    if not session.get('logado') and request.endpoint != 'auth.login': return redirect(url_for('auth.login'))
+    """
+    Fiscal de Acesso da Área Administrativa.
+    Verifica se o usuário está logado E se é da diretoria.
+    """
+    if request.endpoint and request.endpoint.startswith('admin.'):
+        # Checa se o ID existe E se o cargo é diretoria
+        if not session.get('usuario_id') or session.get('cargo') != 'diretoria':
+            # Se não for autorizado, chuta para o login universal
+            return redirect(url_for('auth.login'))
 
 @admin_bp.route('/admin')
 def admin():
-    return render_template('admin.html', inscritos=InscricaoService.obter_todas(), eventos_admin=EventoService.listar_eventos())
+    """Painel Principal do Administrador."""
+    return render_template('admin.html', 
+                           inscritos=InscricaoService.obter_todas(), 
+                           eventos_admin=EventoService.listar_eventos())
 
 @admin_bp.route('/admin/deletar/<int:id>', methods=['POST'])
 def deletar_inscricao(id):
@@ -32,10 +43,15 @@ def exportar_csv():
 def admin_evento_novo():
     if request.method == 'POST':
         EventoService.criar_evento(
-            nome=request.form.get('nome').strip(), categoria=request.form.get('categoria').strip(),
-            introducao=request.form.get('introducao').strip(), alinhamento=request.form.get('alinhamento').strip(),
-            texto_secundario=request.form.get('texto_secundario').strip(), banner_file=request.files.get('banner_file'),
-            banner_url=request.form.get('banner_url').strip(), corpo_file=request.files.get('corpo_file'), corpo_url=request.form.get('corpo_url').strip()
+            nome=request.form.get('nome').strip(), 
+            categoria=request.form.get('categoria').strip(),
+            introducao=request.form.get('introducao').strip(), 
+            alinhamento=request.form.get('alinhamento').strip(),
+            texto_secundario=request.form.get('texto_secundario').strip(), 
+            banner_file=request.files.get('banner_file'),
+            banner_url=request.form.get('banner_url').strip(), 
+            corpo_file=request.files.get('corpo_file'), 
+            corpo_url=request.form.get('corpo_url').strip()
         )
         return redirect(url_for('admin.admin'))
     return render_template('admin_evento_form.html')
@@ -60,10 +76,15 @@ def admin_edicoes(evento_id):
 def admin_edicao_nova(evento_id):
     if request.method == 'POST':
         EdicaoService.criar_edicao(
-            evento_id=evento_id, ano=request.form.get('ano', type=int), tema=request.form.get('tema').strip(),
-            local=request.form.get('local').strip(), descricao=request.form.get('descricao').strip(),
-            capa_file=request.files.get('capa_file'), capa_url=request.form.get('capa_url').strip(),
-            link_nomes=request.form.getlist('link_nome[]'), link_urls=request.form.getlist('link_url[]')
+            evento_id=evento_id, 
+            ano=request.form.get('ano', type=int), 
+            tema=request.form.get('tema').strip(),
+            local=request.form.get('local').strip(), 
+            descricao=request.form.get('descricao').strip(),
+            capa_file=request.files.get('capa_file'), 
+            capa_url=request.form.get('capa_url').strip(),
+            link_nomes=request.form.getlist('link_nome[]'), 
+            link_urls=request.form.getlist('link_url[]')
         )
         return redirect(url_for('admin.admin_edicoes', evento_id=evento_id))
     return render_template('admin_edicao_form.html', evento=EventoRepository.buscar_por_id(evento_id))

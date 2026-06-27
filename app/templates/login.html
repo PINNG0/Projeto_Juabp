@@ -1,35 +1,44 @@
 {% extends 'base.html' %}
 
-{% block title %}Login da Diretoria - JUABP{% endblock %}
+{% block title %}Acesso - JUABP{% endblock %}
 
 {% block content %}
 <div class="registration-wrapper login-wrapper">
     <div class="registration-card-single login-card">
         
         <div class="reg-header">
-            <span class="tag">RESTRITO</span>
-            <h1>Acesso Diretoria</h1>
-            <p class="text">Insira a senha de acesso para visualizar o painel de inscrições da JUABP.</p>
+            <h1>Acesso ao Sistema</h1>
+            <p class="text">Insira suas credenciais para continuar.</p>
         </div>
 
         <div class="reg-form-area">
-            {% if erro %}
-                <div class="error-box">
-                    <p>❌ {{ erro }}</p>
-                </div>
-            {% endif %}
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="error-box">
+                            <p>{% if category == 'erro' %}❌{% else %}✅{% endif %} {{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-            <form method="POST" class="custom-form">
+            <form method="POST" action="{{ url_for('auth.login') }}" class="custom-form">
                 
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
                 <div class="input-group">
-                    <label for="senha">Senha de Acesso</label>
-                    <input type="password" id="senha" name="senha" placeholder="Digite a senha" required>
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" placeholder="Digite seu usuário" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
                 </div>
 
                 <button type="submit" class="btn btn-full">
-                    ENTRAR NO PAINEL
+                    ENTRAR
                 </button>
             </form>
         </div>

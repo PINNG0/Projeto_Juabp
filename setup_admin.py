@@ -13,7 +13,8 @@ with app.app_context():
     admin_existe = Usuario.query.filter_by(username='diretoria').first()
     
     if not admin_existe:
-        novo_admin = Usuario(username='diretoria')
+        # ATUALIZADO: Agora criamos o usuário já com o cargo de 'diretoria'
+        novo_admin = Usuario(username='diretoria', cargo='diretoria')
         novo_admin.set_password('@Tsunami2026') 
         
         db.session.add(novo_admin)
@@ -23,13 +24,17 @@ with app.app_context():
         print("✅ BANCO DE DADOS ATUALIZADO!")
         print("👤 Login criado: diretoria")
         print("🔑 Senha: @Tsunami2026")
+        print("🎖️ Cargo atribuído: diretoria")
         print("====================================\n")
     else:
-        # Se já existir e estiver dando erro, força a atualização da senha
+        # ATUALIZADO: Se já existir, força a correção do cargo além da senha
+        admin_existe.cargo = 'diretoria'
         admin_existe.set_password('@Tsunami2026')
         db.session.commit()
+        
         print("\n====================================")
-        print("🔄 SENHA DO ADMIN REDEFINIDA COM SUCESSO!")
+        print("🔄 ACESSO DO ADMIN ATUALIZADO COM SUCESSO!")
         print("👤 Login: diretoria")
         print("🔑 Senha: @Tsunami2026")
+        print("🎖️ Cargo corrigido para: diretoria")
         print("====================================\n")
