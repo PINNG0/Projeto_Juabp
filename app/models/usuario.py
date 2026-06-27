@@ -9,11 +9,17 @@ class Usuario(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     
-    # NOVAS COLUNAS: HIERARQUIA E PERFIL
+    # COLUNAS: HIERARQUIA E STATUS
     nome_completo = db.Column(db.String(100), nullable=True)
-    cargo = db.Column(db.String(20), default='brincante') # 'brincante', 'coreografo', 'diretoria'
+    cargo = db.Column(db.String(20), default='visitante') # 'visitante', 'brincante', 'coreografo', 'diretoria'
     status = db.Column(db.String(20), default='ativo') # 'ativo', 'inativo'
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # NOVAS COLUNAS: PERFIL (Para Rede Social e Contato)
+    biografia = db.Column(db.String(255), nullable=True)
+    telefone = db.Column(db.String(20), nullable=True)
+    foto_perfil = db.Column(db.String(255), default='default_perfil.png')
+    instagram_link = db.Column(db.String(150), nullable=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

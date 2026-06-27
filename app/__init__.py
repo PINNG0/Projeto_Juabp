@@ -1,26 +1,27 @@
 import os
 from flask import Flask
-from app.database.database import db
+
 from app.config.config import Config, INSTANCE_DIR
+from app.database.database import db
+
 
 def create_app():
     app = Flask(__name__)
-    
-    # Carrega as configurações limpas
     app.config.from_object(Config)
 
-    if not os.path.exists(INSTANCE_DIR):
-        os.makedirs(INSTANCE_DIR)
+    os.makedirs(INSTANCE_DIR, exist_ok=True)
 
     db.init_app(app)
 
-    # Importa os modelos centralizados (AvisoInterno adicionado aqui)
-    from app.models import Usuario, Evento, Edicao, GaleriaLink, Inscricao, AvisoInterno
+    from app.models import (
+        Usuario,
+        Evento,
+        Edicao,
+        GaleriaLink,
+        Inscricao,
+        AvisoInterno
+    )
 
-    with app.app_context():
-        db.create_all()
-
-    # Registra as rotas
     from app.routes.public_routes import public_bp
     from app.routes.auth_routes import auth_bp
     from app.routes.admin_routes import admin_bp

@@ -9,3 +9,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ==========================================
+// CONTROLE DO DROPDOWN MENU
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+    const btnUserMenu = document.getElementById("btnUserMenu");
+    const userMenu = document.getElementById("userMenu");
+
+    // Verifica se o botão existe na página antes de adicionar o evento
+    if (btnUserMenu && userMenu) {
+        
+        // Abre e fecha ao clicar no botão
+        btnUserMenu.addEventListener("click", function(event) {
+            // Previne que o clique se propague e feche imediatamente
+            event.stopPropagation(); 
+            userMenu.classList.toggle("show");
+        });
+
+        // Fecha o menu se clicar em qualquer outro lugar da tela
+        window.addEventListener("click", function(event) {
+            if (!event.target.closest('.user-dropdown')) {
+                if (userMenu.classList.contains("show")) {
+                    userMenu.classList.remove("show");
+                }
+            }
+        });
+    }
+});

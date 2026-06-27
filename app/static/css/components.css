@@ -89,3 +89,102 @@
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .box { padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-dark); }
 .box h3 { color: var(--accent); font-size: 16px; margin-bottom: 8px; }
+
+/* =========================================
+   DROPDOWN MENU (FIX DEFINITIVO)
+========================================= */
+
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 999999;
+}
+
+/* botão do usuário */
+.dropdown-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--gold-soft);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 999999;
+}
+
+/* seta */
+.dropdown-arrow {
+    font-size: 0.8em;
+}
+
+/* MENU */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 120%;
+
+    background: #111;
+    min-width: 200px;
+
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+
+    z-index: 1000000;
+
+    flex-direction: column;
+
+    /* 🔥 ESSENCIAL PRA CLIQUE FUNCIONAR */
+    pointer-events: auto;
+}
+
+/* mostrar menu */
+.dropdown-content.show {
+    display: flex;
+}
+
+/* itens */
+.dropdown-item {
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+
+    transition: 0.2s ease;
+
+    /* 🔥 garante clique */
+    pointer-events: auto;
+    position: relative;
+    z-index: 1000001;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.05);
+    padding-left: 25px;
+}
+
+/* admin */
+.admin-link {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* logout */
+.logout-link {
+    color: #f87171;
+    border-bottom: none;
+}
+
+/* 🔥 GARANTIA MÁXIMA: nada pode sobrepor header */
+header {
+    position: relative;
+    z-index: 999999;
+}
