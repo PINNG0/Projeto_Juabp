@@ -4,7 +4,7 @@ from app.services.evento_service import EventoService
 from app.services.inscricao_service import InscricaoService
 from app.services.edicao_service import EdicaoService
 from app.utils.csv_exporter import CsvExporter
-from app.utils.evento_mapper import EventoMapper
+
 
 from app.repositories.evento_repository import EventoRepository
 from app.repositories.edicao_repository import EdicaoRepository
@@ -71,8 +71,15 @@ def admin_evento_editar(id):
     if request.method == 'POST':
         EventoService.editar_evento(
             id,
-            request.form.get('nome', '').strip(),
-            request.form.get('categoria', '').strip()
+            nome=request.form.get('nome', '').strip(),
+            categoria=request.form.get('categoria', '').strip(),
+            introducao=request.form.get('introducao', '').strip(),
+            alinhamento=request.form.get('alinhamento', '').strip(),
+            texto_secundario=request.form.get('texto_secundario', '').strip(),
+            banner_file=request.files.get('banner_file'),
+            banner_url=request.form.get('banner_url', '').strip(),
+            corpo_file=request.files.get('corpo_file'),
+            corpo_url=request.form.get('corpo_url', '').strip()
         )
         return redirect(url_for('admin.admin'))
 
@@ -80,7 +87,7 @@ def admin_evento_editar(id):
 
     return render_template(
         'admin_evento_editar.html',
-        evento=EventoMapper.evento_para_dict(evento)
+        evento=evento.to_dict()  # Olha que beleza, chamando direto do objeto!
     )
 
 

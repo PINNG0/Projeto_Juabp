@@ -1,13 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-
-from app.models.usuario import Usuario
+from app.services.auth_service import AuthService
 
 auth_bp = Blueprint('auth', __name__)
 
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
@@ -16,14 +13,15 @@ def login():
             flash('Preencha usuário e senha.', 'erro')
             return render_template('login.html')
 
-        usuario = Usuario.query.filter_by(username=username).first()
+        # A Rota agora só chama o Service! Nada de lógica de banco de dados aqui.
+        usuario = AuthService.validar_login(username, password)
 
-        if usuario and usuario.check_password(password):
+        if usuario:
             session.clear()
-
             session['usuario_id'] = usuario.id
             session['username'] = usuario.username
             session['cargo'] = usuario.cargo
+            session['nome_completo'] = usuario.nome_completo or usuario.username
             session.permanent = True
 
             if usuario.is_admin():
@@ -35,8 +33,7 @@ def login():
 
     return render_template('login.html')
 
-
 @auth_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('public.home'))

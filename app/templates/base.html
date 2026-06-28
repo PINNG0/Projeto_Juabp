@@ -133,11 +133,9 @@
 </footer>
 
 <!-- JS separados corretamente -->
-<script src="{{ url_for('static', filename='js/anim.js') }}" defer></script>
-<script src="{{ url_for('static', filename='js/form-masks.js') }}" defer></script>
-<script src="{{ url_for('static', filename='js/dropdown.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/anim.js') }}?v=1.1"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}?v=1.1"></script>
 
 {% block extra_scripts %}{% endblock %}
-
 </body>
 </html>

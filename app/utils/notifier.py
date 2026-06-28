@@ -1,16 +1,17 @@
+import os
 import requests
-
 
 class Notifier:
 
     @staticmethod
     def enviar_alerta_telegram(mensagem):
-        bot_token = 'SEU_TOKEN_AQUI'
-        chat_id = 'SEU_CHAT_ID_AQUI'
+        # Agora ele puxa do arquivo .env com segurança!
+        bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+        chat_id = os.getenv('TELEGRAM_CHAT_ID')
 
-        if bot_token == 'SEU_TOKEN_AQUI':
+        if not bot_token or not chat_id:
             print("\n" + "=" * 40)
-            print("📲 ALERTA (SIMULAÇÃO)")
+            print("📲 ALERTA (SIMULAÇÃO - Telegram não configurado no .env)")
             print("=" * 40)
             print(mensagem.replace('<b>', '').replace('</b>', ''))
             print("=" * 40 + "\n")
@@ -27,5 +28,4 @@ class Notifier:
         try:
             requests.post(url, json=payload, timeout=5)
         except Exception:
-            # não quebra fluxo do usuário
             pass

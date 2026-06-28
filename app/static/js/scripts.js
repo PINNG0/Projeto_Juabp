@@ -1,4 +1,6 @@
-// Máscara automática para o campo de telefone (WhatsApp)
+// ==========================================
+// 1. MÁSCARA AUTOMÁTICA (TELEFONE/WHATSAPP)
+// ==========================================
 document.addEventListener('DOMContentLoaded', function() {
     const telefoneInput = document.getElementById('telefone');
     
@@ -11,27 +13,42 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================
-// CONTROLE DO DROPDOWN MENU
+// 2. CONTROLE DO DROPDOWN MENU DO UTILIZADOR
 // ==========================================
 document.addEventListener("DOMContentLoaded", function() {
     const btnUserMenu = document.getElementById("btnUserMenu");
     const userMenu = document.getElementById("userMenu");
 
-    // Verifica se o botão existe na página antes de adicionar o evento
     if (btnUserMenu && userMenu) {
-        
-        // Abre e fecha ao clicar no botão
         btnUserMenu.addEventListener("click", function(event) {
-            // Previne que o clique se propague e feche imediatamente
             event.stopPropagation(); 
             userMenu.classList.toggle("show");
         });
 
-        // Fecha o menu se clicar em qualquer outro lugar da tela
         window.addEventListener("click", function(event) {
             if (!event.target.closest('.user-dropdown')) {
                 if (userMenu.classList.contains("show")) {
                     userMenu.classList.remove("show");
+                }
+            }
+        });
+    }
+});
+
+// ==========================================
+// 3. COMPORTAMENTO DA PÁGINA DE PERFIL (UPLOAD FOTO)
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+    const fotoPerfilInput = document.getElementById('foto_perfil');
+    
+    if (fotoPerfilInput) {
+        fotoPerfilInput.addEventListener('change', function(e) {
+            if(e.target.files.length > 0) {
+                let label = document.getElementById('label_foto');
+                if (label) {
+                    label.innerHTML = "✅ Imagem Selecionada";
+                    label.style.borderColor = "var(--accent)";
+                    label.style.color = "var(--accent)";
                 }
             }
         });

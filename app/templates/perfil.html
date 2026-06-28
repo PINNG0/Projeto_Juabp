@@ -3,39 +3,76 @@
 {% block title %}Meu Perfil - JUABP{% endblock %}
 
 {% block content %}
-<div class="registration-wrapper login-wrapper">
-    <div class="registration-card-single login-card" style="max-width: 600px;">
-        
-        <div class="reg-header">
-            <span class="tag" style="border-color: #f59e0b; color: #f59e0b; text-transform: uppercase;">
-                {{ usuario.cargo }}
-            </span>
 
-            <h1>Configurações de Perfil</h1>
-            <p class="text">
-                Atualize as suas informações para a comunidade e contratantes.
-            </p>
-        </div>
+<div class="registration-wrapper login-wrapper" style="padding-top: 40px; padding-bottom: 80px;">
+    <div class="registration-card-single login-card" style="max-width: 650px;">
 
-        <div class="reg-form-area">
+```
+    <div class="reg-header">
+        <span class="tag" style="border-color: #f59e0b; color: #f59e0b; text-transform: uppercase;">
+            {{ usuario.cargo }}
+        </span>
+        <h1>Meu Perfil</h1>
+        <p class="text">Atualize como a comunidade vê você.</p>
+    </div>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
+    <div class="reg-form-area">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="error-box {{ 'msg-sucesso' if category == 'sucesso' else '' }}" style="margin-bottom: 20px;">
+                        <p>{% if category == 'erro' %}❌{% else %}✅{% endif %} {{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-                        <div class="error-box {{ 'success-box' if category == 'sucesso' else '' }}">
-                            <p>
-                                {% if category == 'erro' %}❌{% else %}✅{% endif %}
-                                {{ message }}
-                            </p>
-                        </div>
+        <form method="POST"
+              action="{{ url_for('public.perfil') }}"
+              enctype="multipart/form-data"
+              class="custom-form">
 
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; gap: 15px;">
 
-            <form method="POST" action="{{ url_for('public.perfil') }}" class="custom-form">
+                <div style="width: 120px;
+                            height: 120px;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            border: 2px solid var(--accent);
+                            box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);">
 
+                    {% set avatar_img = usuario.foto_perfil if usuario.foto_perfil else 'default_perfil.png' %}
+                    {% set logo_padrao = url_for('static', filename='img/Logo.png') %}
+
+                    {% if avatar_img.startswith('http') %}
+                        <img src="{{ avatar_img }}"
+                             alt="Foto de Perfil"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/' + avatar_img) }}"
+                             alt="Foto de Perfil"
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             onerror="this.src='{{ logo_padrao }}'">
+                    {% endif %}
+                </div>
+
+                <div class="input-group" style="text-align: center; margin-bottom: 0;">
+                    <label for="foto_perfil"
+                           class="btn-alterar-foto"
+                           id="label_foto">
+                        📸 Alterar Foto
+                    </label>
+
+                    <input type="file"
+                           id="foto_perfil"
+                           name="foto_perfil"
+                           accept="image/png, image/jpeg, image/jpg"
+                           style="display: none;">
+                </div>
+
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
                 <div class="input-group">
                     <label for="nome_completo">Nome de Exibição</label>
                     <input type="text"
@@ -47,7 +84,38 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="telefone">WhatsApp / Telefone</label>
+                    <label for="data_nascimento">Nascimento</label>
+                    <input type="date"
+                           id="data_nascimento"
+                           name="data_nascimento"
+                           value="{{ usuario.data_nascimento if usuario.data_nascimento else '' }}">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="input-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text"
+                           id="cidade"
+                           name="cidade"
+                           value="{{ usuario.cidade or '' }}"
+                           placeholder="Ex: Porto Velho">
+                </div>
+
+                <div class="input-group">
+                    <label for="estado">Estado</label>
+                    <input type="text"
+                           id="estado"
+                           name="estado"
+                           value="{{ usuario.estado or '' }}"
+                           placeholder="Ex: RO"
+                           maxlength="2">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="input-group">
+                    <label for="telefone">WhatsApp</label>
                     <input type="text"
                            id="telefone"
                            name="telefone"
@@ -56,44 +124,34 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="instagram_link">Link do Instagram</label>
-                    <input type="url"
+                    <label for="instagram_link">Instagram</label>
+                    <input type="text"
                            id="instagram_link"
                            name="instagram_link"
                            value="{{ usuario.instagram_link or '' }}"
                            placeholder="https://instagram.com/seu_perfil">
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <label for="biografia">Biografia Curta</label>
+            <div class="input-group">
+                <label for="biografia">Biografia Curta</label>
+                <textarea id="biografia"
+                          name="biografia"
+                          rows="4"
+                          placeholder="Conta um pouco sobre a tua história com a junina..."
+                          class="biografia-input">{{ usuario.biografia or '' }}</textarea>
+            </div>
 
-                    <textarea id="biografia"
-                              name="biografia"
-                              rows="4"
-                              placeholder="Conta um pouco sobre a tua história com a junina..."
-                              style="
-                                  background: rgba(0,0,0,0.5);
-                                  border: 1px solid rgba(255,255,255,0.1);
-                                  padding: 14px;
-                                  border-radius: 8px;
-                                  color: #fff;
-                                  width: 100%;
-                                  font-family: inherit;
-                                  resize: vertical;
-                                  outline: none;
-                                  transition: 0.3s;
-                              "
-                              onfocus="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 10px rgba(250, 204, 21, 0.15)'"
-                              onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none'">{{ usuario.biografia or '' }}</textarea>
-                </div>
+            <button type="submit"
+                    class="btn btn-full"
+                    style="margin-top: 10px;">
+                SALVAR ALTERAÇÕES
+            </button>
 
-                <button type="submit" class="btn btn-full">
-                    SALVAR ALTERAÇÕES
-                </button>
-
-            </form>
-        </div>
-
+        </form>
     </div>
+</div>
+```
+
 </div>
 {% endblock %}
